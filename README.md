@@ -1,8 +1,10 @@
 # ComsewogueChat
 
-### Index
-Brad    | Frontend Chat
-David   | Backend Responder
-Michael | Frontend Admin Panel
-Mark    | Backend Admin Panel
-Brett   | Helper Scripts  
+## Structure
+| Codebase     |      Description          |
+| :----------- | :-----------------------: |
+| brad         |      Frontend Chat        |
+| david        |     Backend Responder     |
+| michael      |   Frontend Admin Panel    |
+| mark         |   Backend Admin Panel     |
+| brett        |      Helper Scripts       |
