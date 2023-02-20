@@ -1,19 +1,24 @@
 import constants
+import re
+import os
 
 
 def parse_request(request):
-    # precondition: only one sentence or phrase
+    #code to check if reuqest is multiple sentences
 
-    # split request by words
+    #if re.search(r'[.?!](?=\s*[a-zA-Z])', request):
+        #raise ValueError('Input must be only one sentence or phrase.')
 
-    # return words
-    return []
+    request = re.sub(r'[^a-zA-Z ]', '', request.lower())
+    words = request.split()
+
+    return words
 
 
 def clean_tokens(tokens):
     queries = []
     context = []
-  
+
     queries = filter(lambda w: w not in constants.PUNCTUATION, tokens)
     queries = filter(lambda w: w not in constants.QUERY_STOPWORDS, queries)
     queries = list(queries)
@@ -28,11 +33,23 @@ def clean_tokens(tokens):
 
 
 def classify_queries(queries):
-    # for every query, check similarity to every input node
-    # if strong enough, convert queries
+    term_map = {}
 
-    # return inputs
-    return []
+    for filename in os.listdir('terms'):
+        with open(os.path.join('terms', filename), 'r') as f:
+            words = f.read().split()
+
+            for word in words:
+                term_map[word] = words[0]
+
+    results_set = set()
+
+    for query in queries:
+        if query in term_map:
+            results_set.add(term_map[query])
+
+    results = list(results_set)
+    return results
 
 
 def compute_inputs(inputs):
@@ -83,4 +100,5 @@ def answer(request):
 
     return answers
 
-search(["when"])
+(one, two) = clean_tokens(parse_request("when"))
+print(classify_queries(["when"]))

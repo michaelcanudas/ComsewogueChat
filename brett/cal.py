@@ -54,7 +54,7 @@ for e in events:
     if e["isAllDay"] == True:
         info = [e["name"], e["preformatted_localStartDate"], "All Day", e["location"]]
     else:
-        info = [e["name"], e["preformatted_localStartDate"], e["preformatted_localStartTime"], e["location"]]
+        info = [e["name"], e["preformatted_localStartDate"], e["preformatted_localStartTime"] + " to " + e["preformatted_localEndTime"], e["location"]]
     if db.get(id) == None:
         for item in info:
             if isinstance(item, str):
