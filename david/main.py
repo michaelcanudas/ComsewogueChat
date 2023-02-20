@@ -54,13 +54,13 @@ def search(outputs, context):
     for output in outputs:
         location = search_locations[output]
 
-        if location.Calandar:
-            # database.search_calandar()
+        if location.Site:
+            # database.search(___,0)
             # based on outputs, filter response
             pass
 
-        if location.Site:
-            # database.search_site()
+        if location.Calandar:
+            # database.search(___,1)
             # based on outputs, filter response
             pass
 

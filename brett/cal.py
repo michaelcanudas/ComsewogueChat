@@ -19,6 +19,15 @@ endISO = end.isoformat() + "T03:59:59.999Z"
 startSTR = start.strftime("%B %d, %Y")
 endSTR = end.strftime("%B %d, %Y")
 
+def formatinfo(list):
+    for i in range(len(list)):
+        if isinstance(list[i], str) and i != 2:
+            list[i] = list[i].title()
+            if " Hs " in list[i] or list[i].startswith("Hs ") or list[i].endswith(" Hs"):
+                list[i] = list[i].replace("Hs", "High School")
+    return list
+
+
 
 
 req = { "portletInstanceId":"10184","primaryCalendarId":"60310","calendarIds":["60310"],"localFromDate":startISO,"localToDate":endISO,"filterFieldValue":"","searchText":"","categoryFieldValue":"","filterOptions":[{"__type":"ModernCalendarDropdownOption","text":"Name","value":"Name"}] }
@@ -47,16 +56,19 @@ for e in events:
     else:
         info = [e["name"], e["preformatted_localStartDate"], e["preformatted_localStartTime"], e["location"]]
     if db.get(id) == None:
-        db.set(id, json.dumps(info))
+        for item in info:
+            if isinstance(item, str):
+                item = item.title()
+        db.set(id, json.dumps(formatinfo(info)))
     elif json.loads(db.get(id)) != info:
         index = info.index(e["preformatted_localStartDate"])
         if id in checkedID and info[index] != json.loads(db.get(id))[index]:
             info[index] = newDates(json.loads(db.get(id))[index], info[index], str(e["name"]))
-            db.set(id, json.dumps(info))
+            db.set(id, json.dumps(formatinfo(info)))
         elif id in checkedID or info[index] not in json.loads(db.get(id))[index]:
-            db.set(id, json.dumps(info))
+            db.set(id, json.dumps(formatinfo(info)))
         elif info[index] in json.loads(db.get(id))[index] and any(info[i] != json.loads(db.get(id))[i] for i in range(len(info)) if i != index):
-            db.set(id, json.dumps(info))
+            db.set(id, json.dumps(formatinfo(info)))
     checkedID.append(id)
 
 
@@ -109,9 +121,15 @@ data = groupData(raw)
 
 for sublist in data:
     sublist.pop(5)
+    if sublist[4].startswith('V'):
+        sublist[4] = sublist[4].replace('V', 'VARSITY', 1)
+    elif sublist[4].startswith('JV'):
+        sublist[4] = sublist[4].replace('JV', 'JUNIOR VARSITY', 1)
+    elif sublist[4].startswith('B'):
+        sublist[4] = sublist[4].replace('B', 'MIDDLE SCHOOL', 1)
     first_element = str(sublist[0]).replace("/", "_")
     first_element = str(first_element).replace(" ", "")
-    fifth_element = str(sublist[4].replace(" ", ""))
+    fifth_element = sublist[4].title().replace(" ", "")
     newList = fifth_element + first_element
     title = sublist[4].strip().lstrip() + ": " + sublist[2].strip().lstrip() + " @ " + sublist[3].strip().lstrip()
     date = datetime.datetime.strptime(sublist[0], '%m/%d/%Y').strftime('%B %d, %Y')
@@ -119,7 +137,7 @@ for sublist in data:
     else: sublist = [title,date,sublist[1],""]
     globals()[newList] = sublist
     checkedID.append(newList)
-    db.set(newList, json.dumps(sublist))
+    db.set(newList, json.dumps(formatinfo(sublist)))
 
 
 
