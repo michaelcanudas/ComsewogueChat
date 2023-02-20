@@ -11,19 +11,20 @@ def parse_request(request):
 
 
 def clean_tokens(tokens):
-    # remove punctuation
-    # remove stopwords
-    # remove manual override words
-    # assign to queries
+    queries = []
+    context = []
+  
+    queries = filter(lambda w: w not in constants.PUNCTUATION, tokens)
+    queries = filter(lambda w: w not in constants.QUERY_STOPWORDS, queries)
+    queries = list(queries)
 
-    # remove punctuation
-    # check for noun phrases
-    # check for verbs/adjectives
-    # check for subjects
-    # assign to context
+    context = filter(lambda w: w not in constants.PUNCTUATION, tokens)
+    context = filter(lambda w: w not in constants.CONTEXT_STOPWORDS, context)
+    # check for subjects, noun phrases, verbs, adjectives
+    # remove terms from queries (after run through next step)
+    context = list(context)
 
-    # return (queries, context)
-    return [], []
+    return queries, context
 
 
 def classify_queries(queries):
