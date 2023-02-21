@@ -5,3 +5,6 @@ second
 start
 begin
 end
+over
+done
+when

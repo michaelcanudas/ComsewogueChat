@@ -40,13 +40,16 @@ def classify_queries(queries):
             words = f.read().split()
 
             for word in words:
-                term_map[word] = words[0]
+                if word in term_map:
+                    term_map[word].append(os.path.splitext(filename)[0])
+                else:
+                    term_map[word] = [os.path.splitext(filename)[0]]
 
     results_set = set()
 
     for query in queries:
         if query in term_map:
-            results_set.add(term_map[query])
+            results_set.update(term_map[query])
 
     results = list(results_set)
     return results
@@ -99,6 +102,3 @@ def answer(request):
     answers = search(outputs, context)
 
     return answers
-
-(one, two) = clean_tokens(parse_request("when"))
-print(classify_queries(["when"]))

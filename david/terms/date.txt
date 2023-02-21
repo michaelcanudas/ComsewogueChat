@@ -6,3 +6,6 @@ week
 start
 begin
 end
+over
+done
+when
