@@ -114,8 +114,8 @@ def answer(request):
 
     inputs = classify_queries(queries)
 
-    #outputs = compute_inputs(inputs)
+    outputs = compute_inputs(inputs)
 
-    #answers = search(outputs, context)
+    answers = search(outputs, context)
 
-    return inputs, context
+    return answers
