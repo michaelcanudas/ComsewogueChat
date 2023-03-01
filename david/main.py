@@ -2,6 +2,8 @@ import constants
 import re
 import os
 
+pastQueries = []
+pastContexts = []
 
 def parse_request(request):
     #code to check if reuqest is multiple sentences
@@ -16,8 +18,6 @@ def parse_request(request):
 
 
 def clean_tokens(tokens):
-    queries = []
-    context = []
 
     queries = filter(lambda w: w not in constants.PUNCTUATION, tokens)
     queries = filter(lambda w: w not in constants.QUERY_STOPWORDS, queries)
@@ -28,6 +28,14 @@ def clean_tokens(tokens):
     # check for subjects, noun phrases, verbs, adjectives
     # remove terms from queries (after run through next step)
     context = list(context)
+
+    pastContexts.append(context)
+
+    if not context:
+        for i in range(len(pastContexts)-2, -1, -1):
+            if pastContexts[i]:
+                context = pastContexts[i]
+                break
 
     return queries, context
 
@@ -52,6 +60,15 @@ def classify_queries(queries):
             results_set.update(term_map[query])
 
     results = list(results_set)
+
+    pastQueries.append(results)
+
+    if not results:
+        for i in range(len(pastQueries)-2, -1, -1):
+            if pastQueries[i]:
+                results = pastQueries[i]
+                break
+
     return results
 
 
@@ -97,8 +114,8 @@ def answer(request):
 
     inputs = classify_queries(queries)
 
-    outputs = compute_inputs(inputs)
+    #outputs = compute_inputs(inputs)
 
-    answers = search(outputs, context)
+    #answers = search(outputs, context)
 
-    return answers
+    return inputs, context

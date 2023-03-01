@@ -290,6 +290,7 @@
         var input = document.getElementById("message-input");
 
         if (input.value.trim() === '') {
+            ready = true;
             return;
         }
 
@@ -345,14 +346,13 @@
             message.style.left = container.offsetWidth - message.offsetWidth + "px";
         }
 
-        reformatRequired = false;
-
         if (readyUp === true) {
             ready = true;
         }
     }
 
     if (ready && reformatRequired) {
+        reformatRequired = false;
         formatPastMessages();
     }
 
