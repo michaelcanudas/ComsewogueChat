@@ -1,14 +1,13 @@
 import re
-import main
-
-input = "When is the first tennis match? where is it?" #code that takes stuff from website
+from answer import answer
 
 pattern = r'(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?|\!)\s'
 
-sentences = re.split(pattern, input)
+def format(input):
+    sentences = re.split(pattern, input)
 
-answers = []
-for sentence in sentences:
-    answers.append(main.answer(sentence))
+    answers = []
+    for sentence in sentences:
+        answers.append(answer(sentence))
 
-print(answers)
+    return answers

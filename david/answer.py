@@ -1,16 +1,12 @@
-import constants
 import re
 import os
+import constants
+from abilities import date
 
 pastQueries = []
 pastContexts = []
 
 def parse_request(request):
-    #code to check if reuqest is multiple sentences
-
-    #if re.search(r'[.?!](?=\s*[a-zA-Z])', request):
-        #raise ValueError('Input must be only one sentence or phrase.')
-
     request = re.sub(r'[^a-zA-Z ]', '', request.lower())
     words = request.split()
 
@@ -18,7 +14,6 @@ def parse_request(request):
 
 
 def clean_tokens(tokens):
-
     queries = filter(lambda w: w not in constants.PUNCTUATION, tokens)
     queries = filter(lambda w: w not in constants.QUERY_STOPWORDS, queries)
     queries = list(queries)
@@ -72,37 +67,20 @@ def classify_queries(queries):
     return results
 
 
-def compute_inputs(inputs):
-    # compute neural network from inputs to outputs
-    # where outputs are question types (who, when, where, etc)
-
-    # return outputs
-    return []
-
-
 # Compute answers
 # # From question essence, important phrases, and contextual words, search database in all parts
-def search(outputs, context):
+def search(queries, context):
     answers = []
 
-    search_locations = {
-        constants.NET_OUT_WHEN: { Calandar: True, Site: False }
+    handlers = {
+        "date": date.search,
+        "time": lambda c: []
     }
 
-    for output in outputs:
-        location = search_locations[output]
+    for query in queries:
+        results = handlers[query](context)
 
-        if location.Site:
-            # database.search(___,0)
-            # based on outputs, filter response
-            pass
-
-        if location.Calandar:
-            # database.search(___,1)
-            # based on outputs, filter response
-            pass
-
-    # rank by number of keywords in each result
+        answers.extend(results)
 
     return answers
 
@@ -112,10 +90,12 @@ def answer(request):
 
     (queries, context) = clean_tokens(tokens)
 
-    inputs = classify_queries(queries)
+    queries = classify_queries(queries)
 
-    outputs = compute_inputs(inputs)
+    answers = search(queries, context)
 
-    answers = search(outputs, context)
+    return queries, context
 
-    return answers
+
+# add categorization questions (for example: "is tomorrow a snow day", "is tomorrow a b-day")
+# all terms should also be context stopwords
