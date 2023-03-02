@@ -285,7 +285,7 @@
         }
     }
 
-    function getMessage() {
+    async function getMessage() {
 
         var input = document.getElementById("message-input");
 
@@ -313,7 +313,17 @@
 
         response.style.display = "block";
         response.style.height = "auto";
-        response.innerHTML = input.value;
+        response.innerHTML = await fetch("http://api.comsputer.com", {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "question": input.value,
+                "spanish": span
+            })
+        }).then((data) => data.text());
 
         let image = document.createElement("div");
         image.classList.add("image");
