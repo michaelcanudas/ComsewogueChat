@@ -10,4 +10,4 @@ def main():
         res = format(req)
         return res
     except Exception as e:
-        return e
+        return str(e)
