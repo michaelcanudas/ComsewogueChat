@@ -75,8 +75,7 @@ def search(queries, context):
     # DONT THROW ERROR WHEN COMPUTER IS CONFUSE #
     handlers = {
         "date": date.search,
-        "time": lambda c: [],
-        "location": lambda c: [],
+        "time": lambda c: []
     }
 
     for query in queries:
