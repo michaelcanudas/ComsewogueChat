@@ -72,9 +72,11 @@ def classify_queries(queries):
 def search(queries, context):
     answers = []
 
+    # DONT THROW ERROR WHEN COMPUTER IS CONFUSE #
     handlers = {
         "date": date.search,
-        "time": lambda c: []
+        "time": lambda c: [],
+        "location": lambda c: [],
     }
 
     for query in queries:
@@ -92,7 +94,7 @@ def answer(request):
 
     queries = classify_queries(queries)
 
-    answers = search(queries, context)
+    # answers = search(queries, context)
 
     return queries, context
 
