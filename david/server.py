@@ -1,7 +1,9 @@
 from flask import Flask, request
+from flask_cors import CORS
 from inputformat import format
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/", methods=["POST"])
 def main():
@@ -9,5 +11,5 @@ def main():
         req = request.get_json()["question"]
         res = format(req)
         return res
-    except:
-        return "Invalid Request"
+    except Exception as e:
+        return str(e)
