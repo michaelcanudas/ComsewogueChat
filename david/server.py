@@ -9,5 +9,5 @@ def main():
         req = request.get_json()["question"]
         res = format(req)
         return res
-    except:
-        return "Invalid Request"
+    except Exception as e:
+        return e
