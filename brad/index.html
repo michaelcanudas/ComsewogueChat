@@ -287,14 +287,15 @@
 
     async function getMessage() {
 
-        var raw = document.getElementById("message-input");
-        var input = raw.value
-        document.getElementById("message-input").value = "";
+        const raw = document.getElementById("message-input");
 
-        if (input.value.trim() === '') {
+        if (raw.value.trim() === '') {
             ready = true;
             return;
         }
+
+        const input = raw.value
+        document.getElementById("message-input").value = "";
 
         let message = document.createElement("div");
         message.classList.add("message");
