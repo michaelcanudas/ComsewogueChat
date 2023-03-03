@@ -287,7 +287,9 @@
 
     async function getMessage() {
 
-        var input = document.getElementById("message-input");
+        var raw = document.getElementById("message-input");
+        var input = raw.value
+        document.getElementById("message-input").value = "";
 
         if (input.value.trim() === '') {
             ready = true;
@@ -301,10 +303,8 @@
 
         message.style.display = "block";
         message.style.height = "auto";
-        message.innerHTML = input.value;
+        message.innerHTML = input;
         message.value = "";
-
-        document.getElementById("message-input").value = "";
 
         formatPastMessages();
 
@@ -322,7 +322,7 @@
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                "question": input.value,
+                "question": input,
                 "spanish": span
             })
         }).then((data) => data.text());
