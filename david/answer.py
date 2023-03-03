@@ -3,9 +3,6 @@ import os
 import constants
 from abilities import date
 
-pastQueries = []
-pastContexts = []
-
 def parse_request(request):
     request = re.sub(r'[^a-zA-Z ]', '', request.lower())
     words = request.split()
@@ -13,7 +10,7 @@ def parse_request(request):
     return words
 
 
-def clean_tokens(tokens):
+def clean_tokens(tokens, pastContexts):
     queries = filter(lambda w: w not in constants.PUNCTUATION, tokens)
     queries = filter(lambda w: w not in constants.QUERY_STOPWORDS, queries)
     queries = list(queries)
@@ -32,10 +29,10 @@ def clean_tokens(tokens):
                 context = pastContexts[i]
                 break
 
-    return queries, context
+    return queries, context, pastContexts
 
 
-def classify_queries(queries):
+def classify_queries(queries, pastQueries):
     term_map = {}
 
     for filename in os.listdir('terms'):
@@ -64,7 +61,7 @@ def classify_queries(queries):
                 results = pastQueries[i]
                 break
 
-    return results
+    return results, pastQueries
 
 
 # Compute answers
@@ -86,16 +83,16 @@ def search(queries, context):
     return answers
 
 
-def answer(request):
+def answer(request, pastQueries, pastContexts):
     tokens = parse_request(request)
 
-    (queries, context) = clean_tokens(tokens)
+    queries, context, pastContexts = clean_tokens(tokens, pastContexts)
 
-    queries = classify_queries(queries)
+    queries, pastQueries = classify_queries(queries, pastQueries)
 
     # answers = search(queries, context)
 
-    return queries, context
+    return queries + context, pastQueries, pastContexts
 
 
 # add categorization questions (for example: "is tomorrow a snow day", "is tomorrow a b-day")

@@ -304,6 +304,8 @@
         message.innerHTML = input.value;
         message.value = "";
 
+        document.getElementById("message-input").value = "";
+
         formatPastMessages();
 
         let response = document.createElement("div");
@@ -330,8 +332,6 @@
         messagesContainer.appendChild(image);
         images.unshift(image);
         image.style.display = "block";
-
-        document.getElementById("message-input").value = "";
 
         formatPastMessages(true);
     }

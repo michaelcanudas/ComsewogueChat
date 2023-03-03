@@ -9,7 +9,8 @@ CORS(app)
 def main():
     try:
         req = request.get_json()["question"]
-        res = format(req)
+        span = bool(request.get_json()["spanish"])
+        res = format(req, span)
         return res
     except Exception as e:
         return str(e)
