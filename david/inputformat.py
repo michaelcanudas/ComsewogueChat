@@ -25,8 +25,8 @@ def format(input, span):
     answers = []
     for sentence in sentences:
         output, pastQueries, pastContexts = answer(sentence, pastQueries, pastContexts)
-        if span:
-            output = translate(str(output), "spanish")
+        #if span:
+            #output = translate(str(output), "spanish")
         answers.append(output)
 
     return answers
