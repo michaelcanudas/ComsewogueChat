@@ -83,7 +83,7 @@ def search(queries, context):
     return answers
 
 
-def answer(request, pastQueries, pastContexts):
+def respond(request, pastQueries, pastContexts):
     tokens = parse_request(request)
 
     queries, context, pastContexts = clean_tokens(tokens, pastContexts)

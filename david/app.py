@@ -9,7 +9,6 @@ CORS(app)
 
 @app.route("/", methods=["POST"])
 def main():
-    print("STEP 3")
     try:
         req = request.get_json()["question"]
         span = bool(request.get_json()["spanish"])
