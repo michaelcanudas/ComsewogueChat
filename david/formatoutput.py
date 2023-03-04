@@ -25,7 +25,9 @@ def format_output(queries, context, answers):
     answers_str = ""
     if len(answers) > 1:
         answers_str = " and ".join([", ".join(format_answers[:-1]), format_answers[-1]])
-
+    else:
+        answers_str = format_answers[0]
+        
     response = "The " + queries_str + " of the " + " ".join(context) + " is " + answers_str + "."
     return response.strip()
 
