@@ -1,6 +1,6 @@
 from flask import Flask, request
 from flask_cors import CORS
-from answer import answer
+from inputformat import format
 
 
 app = Flask(__name__)
@@ -12,7 +12,7 @@ def main():
     try:
         req = request.get_json()["question"]
         span = bool(request.get_json()["spanish"])
-        res = answer(req, span)[0]
+        res = format(req, span)
 
         return res
     except Exception as e:
