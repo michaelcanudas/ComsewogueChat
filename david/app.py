@@ -3,10 +3,8 @@ from flask_cors import CORS
 from importformat import inputformat
 
 
-print("STEP 1")
 app = Flask(__name__)
 CORS(app)
-print("STEP 2")
 
 
 @app.route("/", methods=["POST"])
