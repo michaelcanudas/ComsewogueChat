@@ -13,6 +13,7 @@ def main():
         req = request.get_json()["question"]
         span = bool(request.get_json()["spanish"])
         res = format(req, span)
+
         return res
     except Exception as e:
         return str(e)

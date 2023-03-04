@@ -5,14 +5,16 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-def search(keywords, id):
+def search(keywords, id, id_idx):
     db = redis.from_url(os.getenv("DB_CONN"), ssl_cert_reqs=None, db=id)
+    db_idx = redis.from_url(os.getenv("DB_CONN"), ssl_cert_reqs=None, db=id_idx)
 
-    matches = []
-    #for value in db.sscan_iter("events", match="*Meeting*"):
-    #    print(value)
-        #for keyword in keywords:
-        #    if keyword in value:
-        #        matches.append(value)
+    entries = db_idx.sunion(keywords)
+    entries = [entry.decode("utf-8") for entry in list(entries)]
 
-    return []
+    results = []
+    for entry in entries:
+        data = db.zrange(entry, 0, 100)
+        results.append([d.decode("utf-8") for d in data])
+
+    return results
