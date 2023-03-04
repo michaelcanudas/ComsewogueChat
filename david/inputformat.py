@@ -1,5 +1,5 @@
 import re
-import answer
+from answer import respond
 
 #from googletrans import Translator
 
@@ -25,7 +25,7 @@ def format(input, span):
 
     answers = []
     for sentence in sentences:
-        output, pastQueries, pastContexts = answer.respond(sentence, pastQueries, pastContexts)
+        output, pastQueries, pastContexts = respond(sentence, pastQueries, pastContexts)
         #if span:
         #    output = translate(str(output), "spanish")
         answers.append(output)
