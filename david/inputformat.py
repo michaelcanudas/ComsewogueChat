@@ -17,6 +17,7 @@ pattern = r'(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?|\!)\s'
 
 def format(input, span):
     if span:
+        input = unidecode(input)
         input = translate(str(input), "english")
         input = input.replace("?", "? ")
 
