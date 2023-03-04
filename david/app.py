@@ -12,7 +12,7 @@ def main():
     try:
         req = request.get_json()["question"]
         span = bool(request.get_json()["spanish"])
-        res = answer(req, span)
+        res = answer(req, span)[0]
 
         return res
     except Exception as e:
