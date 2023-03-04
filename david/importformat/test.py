@@ -1,6 +1,6 @@
 from inputformat import format
 
 req = input()
-res = format(req)
+res = format(req, False)
 
 print(res)
