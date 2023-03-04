@@ -3,12 +3,15 @@ from flask_cors import CORS
 from importformat import inputformat
 
 
+print("STEP 1")
 app = Flask(__name__)
 CORS(app)
+print("STEP 2")
 
 
 @app.route("/", methods=["POST"])
 def main():
+    print("STEP 3")
     try:
         req = request.get_json()["question"]
         span = bool(request.get_json()["spanish"])
