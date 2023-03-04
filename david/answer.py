@@ -2,6 +2,7 @@ import re
 import os
 import constants
 from abilities import date
+from formatoutput import format_output
 
 def parse_request(request):
     request = re.sub(r'[^a-zA-Z ]', '', request.lower())
@@ -12,7 +13,6 @@ def parse_request(request):
 
 def clean_tokens(tokens, pastContexts):
     queries = filter(lambda w: w not in constants.PUNCTUATION, tokens)
-    queries = filter(lambda w: w not in constants.QUERY_STOPWORDS, queries)
     queries = list(queries)
 
     context = filter(lambda w: w not in constants.PUNCTUATION, tokens)
@@ -92,7 +92,8 @@ def respond(request, pastQueries, pastContexts):
 
     # answers = search(queries, context)
 
-    return queries + context, pastQueries, pastContexts
+    answers = []
+    return format_output(queries, context, answers), pastQueries, pastContexts
 
 
 # add categorization questions (for example: "is tomorrow a snow day", "is tomorrow a b-day")

@@ -34,4 +34,4 @@ def format(input, span):
             output = unidecode(output)
         answers.append(output)
 
-    return answers
+    return " ".join(answers)
