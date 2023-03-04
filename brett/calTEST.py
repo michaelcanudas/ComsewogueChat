@@ -35,6 +35,7 @@ res = requests.post("https://www.comsewogue.k12.ny.us/Common/controls/WorkspaceC
 data = json.loads(res.text)
 
 db = redis.from_url(os.getenv("DB_CONN"), ssl_cert_reqs=None, db=5)
+db_idx = redis.from_url(os.getenv("DB_CONN"), ssl_cert_reqs=None, db=6)
 
 def newDates(datesString, newDate, name):
     dates = [datetime.datetime.strptime(date, "%B %d, %Y") for date in datesString.split("; ")]
@@ -55,22 +56,53 @@ for e in events:
         info = [e["name"], e["preformatted_localStartDate"], "All Day", e["location"]]
     else:
         info = [e["name"], e["preformatted_localStartDate"], e["preformatted_localStartTime"] + " to " + e["preformatted_localEndTime"], e["location"]]
-    #if db.sismember("events", ) == None:
-    for item in info:
-        if isinstance(item, str):
-            item = item.title()
 
-    db.sadd("events", json.dumps(formatinfo(info)))
-    #elif json.loads(db.get(id)) != info:
-    #    index = info.index(e["preformatted_localStartDate"])
-    #    if id in checkedID and info[index] != json.loads(db.get(id))[index]:
-    #        info[index] = newDates(json.loads(db.get(id))[index], info[index], str(e["name"]))
-    #        db.set(id, json.dumps(formatinfo(info)))
-    #    elif id in checkedID or info[index] not in json.loads(db.get(id))[index]:
-    #        db.set(id, json.dumps(formatinfo(info)))
-    #    elif info[index] in json.loads(db.get(id))[index] and any(info[i] != json.loads(db.get(id))[i] for i in range(len(info)) if i != index):
-    #        db.set(id, json.dumps(formatinfo(info)))
+    exists = db.exists(id)
+    do_set = False
+    if not exists:
+        for item in info:
+            if isinstance(item, str):
+                item = item.title()
+        do_set = True
+    elif [m.decode("utf-8") for m in db.zrange(id,  0, 100)] != info:
+        redis_info = [m.decode("utf-8") for m in db.zrange(id,  0, 100)]
+        index = info.index(e["preformatted_localStartDate"])
+
+        if id in checkedID and info[index] != redis_info[index]:
+            info[index] = newDates(redis_info[index], info[index], str(e["name"]))
+            do_set = True
+        elif id in checkedID or info[index] not in redis_info[index]:
+            do_set = True
+        elif info[index] in redis_info[index] and any(info[i] != redis_info[i] for i in range(len(info)) if i != index):
+            do_set = True
+
     checkedID.append(id)
+
+    if do_set:
+        if exists:
+            db.delete(id)
+
+        f_info = formatinfo(info)
+        db.zadd(id, {
+            f_info[0]: 0,
+            f_info[1]: 1,
+            f_info[2]: 2,
+            f_info[3]: 3,
+        })
+
+        print("[INSERT] ", f_info)
+
+        terms = []
+        terms.extend(["".join(list(filter(lambda c: c in "abcdefghijklmnopqrstuvwxyz0123456789", word.lower()))) for word in f_info[0].split()])
+        terms.extend(["".join(list(filter(lambda c: c in "abcdefghijklmnopqrstuvwxyz0123456789", word.lower()))) for word in f_info[1].split()])
+        terms.extend(["".join(list(filter(lambda c: c in "abcdefghijklmnopqrstuvwxyz0123456789", word.lower()))) for word in f_info[2].split()])
+        terms.extend(["".join(list(filter(lambda c: c in "abcdefghijklmnopqrstuvwxyz0123456789", word.lower()))) for word in f_info[3].split()])
+        terms = list(filter(None, terms))
+
+        for term in terms:
+            db_idx.sadd(term, id)
+
+        print("[INDEXED] ", id, " into ", terms)
 
 
 
@@ -138,16 +170,35 @@ for sublist in data:
     else: sublist = [title,date,sublist[1],""]
     globals()[newList] = sublist
     checkedID.append(newList)
-    #db.set(newList, json.dumps(formatinfo(sublist)))
 
+    if db.exists(newList):
+        db.delete(newList)
 
+    f_info = formatinfo(sublist)
+    db.zadd(newList, {
+        f_info[0]: 0,
+        f_info[1]: 1,
+        f_info[2]: 2,
+        f_info[3]: 3,
+    })
 
-#for key in db.scan_iter("*"):
-#    try:
-#        if json.loads(key) not in checkedID:
-#            print("Deleted " + str(key))
-#            db.delete(key)
-#    except (TypeError, json.decoder.JSONDecodeError):
-#        if key.decode("UTF-8") not in checkedID:
-#            print("Deleted " + str(key))
-#            db.delete(key)
+    print("[INSERT] ", f_info)
+
+    terms = []
+    terms.extend(["".join(list(filter(lambda c: c in "abcdefghijklmnopqrstuvwxyz0123456789", word.lower()))) for word in f_info[0].split()])
+    terms.extend(["".join(list(filter(lambda c: c in "abcdefghijklmnopqrstuvwxyz0123456789", word.lower()))) for word in f_info[1].split()])
+    terms.extend(["".join(list(filter(lambda c: c in "abcdefghijklmnopqrstuvwxyz0123456789", word.lower()))) for word in f_info[2].split()])
+    terms.extend(["".join(list(filter(lambda c: c in "abcdefghijklmnopqrstuvwxyz0123456789", word.lower()))) for word in f_info[3].split()])
+    terms = list(filter(None, terms))
+
+    for term in terms:
+        db_idx.sadd(term, newList)
+
+    print("[INDEXED] ", newList, " into ", terms)
+
+checkedID = [str(id) for id in checkedID]
+
+for key in db.scan_iter("*"):
+    if key.decode("utf-8") not in checkedID:
+        print("[DELETE] ", key.decode("utf-8"))
+        db.delete(key)

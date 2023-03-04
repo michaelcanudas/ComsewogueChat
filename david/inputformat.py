@@ -1,5 +1,5 @@
 import re
-from answer import respond
+import answer
 
 from googletrans import Translator
 from unidecode import unidecode
@@ -28,7 +28,7 @@ def format(input, span):
 
     answers = []
     for sentence in sentences:
-        output, pastQueries, pastContexts = respond(sentence, pastQueries, pastContexts)
+        output, pastQueries, pastContexts = answer.answer(sentence, pastQueries, pastContexts)
         if span:
             output = translate(str(output), "spanish")
             output = unidecode(output)
