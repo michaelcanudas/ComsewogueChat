@@ -19,7 +19,6 @@ def format(input, span):
     if span:
         input = unidecode(input)
         input = translate(str(input), "english")
-        input = input.replace("?", "? ")
 
     pastQueries = []
     pastContexts = []
@@ -32,6 +31,14 @@ def format(input, span):
         if span:
             output = translate(str(output), "spanish")
             output = unidecode(output)
+            if output.startswith('?'):
+                output = output[1:]
+            if ".?" in output:
+                output = output.replace(".?", ". ")
+            if "!!" in output:
+                output = output.replace("!!", "! ")
+            if "??" in output:
+                output = output.replace("??", "? ")
         answers.append(output)
 
     return " ".join(answers)
