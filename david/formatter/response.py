@@ -1,7 +1,7 @@
 from .request import translate
 from unidecode import unidecode
 
-def format_response(queries, context, answers):
+def format_response(answers, queries, context):
 
     if len(answers) > len(queries):
         for i in range(len(queries)):
