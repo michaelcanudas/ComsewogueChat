@@ -22,7 +22,7 @@ def clean_tokens(tokens, past_context=None):
     context = list(context)
 
     if not past_context:
-        past_context = context
+        past_context = [context]
     else:
         past_context.append(context)
 
@@ -55,7 +55,7 @@ def classify_queries(queries, past_queries=None):
     results = list(results_set)
 
     if not past_queries:
-        past_queries = results
+        past_queries = [results]
     else:
         past_queries.append(results)
 

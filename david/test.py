@@ -1,6 +1,4 @@
 from inputformat import format
-from autocorrect import Speller
-spell = Speller()
 
 req = input()
 
