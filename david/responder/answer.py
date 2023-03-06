@@ -85,6 +85,9 @@ def answer_question(question, past_questions=[]):
 
 
 def answer_questions(questions, past_questions=[]):
+    if not questions:
+        raise Exception("No question found")
+
     answers = []
 
     for question in questions:

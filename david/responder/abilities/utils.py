@@ -8,7 +8,7 @@ load_dotenv()
 def search_db(keywords, id, id_idx):
     db = redis.from_url(os.getenv("DB_CONN"), ssl_cert_reqs=None, db=id)
     db_idx = redis.from_url(os.getenv("DB_CONN"), ssl_cert_reqs=None, db=id_idx)
-
+    
     entries = db_idx.sunion(keywords)
     entries = [entry.decode("utf-8") for entry in list(entries)]
 
