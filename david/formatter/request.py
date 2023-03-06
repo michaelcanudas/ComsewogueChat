@@ -27,9 +27,6 @@ def format_request(request):
         question = unidecode(question)
         question = translate(str(question), "english")
 
-    # pastQueries = []
-    # pastContexts = []
-
     question = spell(question)
 
     pattern = r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?|\!)\s"
@@ -41,22 +38,4 @@ def format_request(request):
         q = spell(q)
         past_formatted_questions.extend(re.split(pattern, q))
 
-    return questions, past_formatted_questions
-
-    answers = []
-    for sentence in sentences:
-        output, pastQueries, pastContexts = answer.answer(sentence, pastQueries, pastContexts)
-        if span:
-            output = translate(str(output), "spanish")
-            output = unidecode(output)
-            if output.startswith('?'):
-                output = output[1:]
-            if ".?" in output:
-                output = output.replace(".?", ". ")
-            if "!!" in output:
-                output = output.replace("!!", "! ")
-            if "??" in output:
-                output = output.replace("??", "? ")
-        answers.append(output)
-
-    return " ".join(answers)
+    return questions, past_formatted_questions, span

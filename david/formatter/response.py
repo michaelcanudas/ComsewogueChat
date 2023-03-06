@@ -1,4 +1,6 @@
 from .constants import NO_QC_RESPONSES_1, NO_QC_RESPONSES_2, NO_Q_RESPONSES_1, NO_Q_RESPONSES_2, NO_C_RESPONSES_1a, NO_C_RESPONSES_1b, NO_C_RESPONSES_2
+from formatter.request import translate
+from unidecode import unidecode
 import random
 
 
@@ -33,13 +35,26 @@ def format_response(queries, context, answers):
         answers_str = format_answers[0]
 
     response = "The " + queries_str + " of the " + " ".join(context) + " is " + answers_str + "."
+
     return response.strip()
 
 
-def format_responses(answers):
+def format_responses(answers, span):
     response = ""
 
     for answer in answers:
         response += " " + format_response(answer[0], answer[1], answer[2])
+
+        if span:
+            response = translate(str(response), "spanish")
+        response = unidecode(response)
+        if response.startswith('?'):
+            response = response[1:]
+        if ".?" in response:
+            response = response.replace(".?", ". ")
+        if "!!" in response:
+            response = response.replace("!!", "! ")
+        if "??" in response:
+            response = response.replace("??", "? ")
 
     return response

@@ -14,7 +14,7 @@ def main():
     try:
         request = req.get_json()
 
-        questions, past_questions = format_request(request)
+        questions, past_questions, span = format_request(request)
         #if err:
         #    return format_error(err)
 
@@ -22,7 +22,7 @@ def main():
         #if err:
         #    return format_error(err)
 
-        response = format_responses(answers)
+        response = format_responses(answers, span)
         #if err:
         #    return format_error(err)
 
