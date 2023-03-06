@@ -218,6 +218,7 @@
     let messages = [];
     let responses = [];
     let images = [];
+    let pastRequests = [];
 
     let reformatRequired = false;
     let ready = true
@@ -325,9 +326,12 @@
             },
             body: JSON.stringify({
                 "question": input,
+                "past_requests": pastRequests,
                 "spanish": span
             })
         }).then((data) => data.text());
+
+        pastRequests.push(input)
 
         let image = document.createElement("div");
         image.classList.add("image");
