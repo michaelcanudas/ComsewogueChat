@@ -50,7 +50,9 @@ def search(queries, context):
     handlers = {
         "date": date.search,
         "time": time.search,
-        "location": location.search
+        "location": location.search,
+        "title": title.search,
+        "opponent": opponent.search
     }
 
     for query in queries:
