@@ -1,14 +1,10 @@
-from .constants import NO_QC_RESPONSES_1, NO_QC_RESPONSES_2, NO_Q_RESPONSES_1, NO_Q_RESPONSES_2, NO_C_RESPONSES_1a, NO_C_RESPONSES_1b, NO_C_RESPONSES_2
+from .constants import *
 from formatter.request import translate
 from unidecode import unidecode
 import random
 
 
 def format_response(queries, context, answers):
-    if len(queries) == 0 and len(context) == 0:
-        return NO_QC_RESPONSES_1[random.randint(0, 4)] + " " + NO_QC_RESPONSES_2[random.randint(0, 4)]
-    if len(queries) == 0:
-        return NO_Q_RESPONSES_1[random.randint(0, 3)] + " ".join(context) + NO_Q_RESPONSES_2[random.randint(0, 3)]
 
     if len(answers) > len(queries):
         for i in range(len(queries)):
@@ -24,10 +20,6 @@ def format_response(queries, context, answers):
                 format_answers.append(answers[i + (j * inc)])
     else:
         format_answers = answers
-
-    if len(context) == 0:
-        randint = random.randint(0,2)
-        return NO_C_RESPONSES_1a[randint] + queries_str + NO_C_RESPONSES_1b[randint] +  NO_C_RESPONSES_2[random.randint(0, 5)]
 
     if len(answers) > 1:
         answers_str = " and ".join([", ".join(format_answers[:-1]), format_answers[-1]])
