@@ -1,6 +1,6 @@
 import re
 import os
-from .abilities import date, time
+from .abilities import date, time, location
 from .constants import PUNCTUATION, STOPWORDS
 
 
@@ -47,7 +47,8 @@ def search(queries, context):
 
     handlers = {
         "date": date.search,
-        "time": time.search
+        "time": time.search,
+        "location": location.search
     }
 
     for query in queries:
