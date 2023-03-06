@@ -19,8 +19,7 @@ def main():
         #    return format_error(err)
 
         answers = answer_questions(questions, past_questions)
-        #if err:
-        #    return format_error(err)
+            # return an error message
 
         response = format_responses(answers, span)
         #if err:
