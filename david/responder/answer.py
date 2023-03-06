@@ -2,6 +2,7 @@ import re
 import os
 from .abilities import date, time, location
 from .constants import *
+from david.exceptions.types import *
 
 
 def parse_request(request):
@@ -70,21 +71,36 @@ def answer_question(question, past_questions=[]):
     while i >= 0 and (not context or not queries):
         past_tokens = parse_request(past_questions[i])
 
-        if not context:
-            _, context = clean_tokens(past_tokens)
-
         if not queries:
             queries, _ = clean_tokens(past_tokens)
             queries = classify_queries(queries)
 
+        if not context:
+            _, context = clean_tokens(past_tokens)
+
         i -= 1
 
+    if not queries and not context:
+        raise NoQueryAndContextException()
+
+    if not queries:
+        raise NoQueryException(context)
+
+    if not context:
+        raise NoContextException(queries)
+
     answer = search(queries, context)
+
+    if not answer:
+        raise NoResultsException(queries, context)
 
     return answer, queries, context
 
 
 def answer_questions(questions, past_questions=[]):
+    if not questions:
+        raise NoQueryAndContextException()
+
     answers = []
 
     for question in questions:
