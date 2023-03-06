@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-def search(keywords, id, id_idx):
+def search_db(keywords, id, id_idx):
     db = redis.from_url(os.getenv("DB_CONN"), ssl_cert_reqs=None, db=id)
     db_idx = redis.from_url(os.getenv("DB_CONN"), ssl_cert_reqs=None, db=id_idx)
 

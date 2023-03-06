@@ -1,6 +1,8 @@
-from flask import Flask, request
+from flask import Flask, request as req
 from flask_cors import CORS
-from inputformat import format
+from formatter.request import format_request
+from formatter.response import format_responses
+from responder.answer import answer_questions
 
 
 app = Flask(__name__)
@@ -10,10 +12,22 @@ CORS(app)
 @app.route("/", methods=["POST"])
 def main():
     try:
-        req = request.get_json()["question"]
-        span = bool(request.get_json()["spanish"])
-        res = format(req, span)
+        request = req.get_json()
 
-        return res
+        questions, past_questions = format_request(request)
+        #if err:
+        #    return format_error(err)
+
+        answers = answer_questions(questions, past_questions)
+        #if err:
+        #    return format_error(err)
+
+        response = format_responses(answers)
+        #if err:
+        #    return format_error(err)
+
+        # res = format(req["question"], bool(req["spanish"]))
+
+        return response
     except Exception as e:
-        return str(e)
+        return "[ERROR] Unhandled Exception: " + str(e)
