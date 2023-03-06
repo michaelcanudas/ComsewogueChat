@@ -13,7 +13,7 @@ class NoQueryException(Exception):
 
 class NoContextException(Exception):
     def __init__(self, queries):
-        self.query = queries
+        self.queries = queries
 
 
 class NoResultsException(Exception):

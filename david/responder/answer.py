@@ -2,7 +2,7 @@ import re
 import os
 from .abilities import date, time, location
 from .constants import *
-from david.exceptions.types import *
+from exceptions.types import *
 
 
 def parse_request(request):

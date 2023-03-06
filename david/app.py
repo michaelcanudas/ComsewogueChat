@@ -2,7 +2,7 @@ from flask import Flask, request as req
 from flask_cors import CORS
 from formatter.request import format_request
 from formatter.response import format_responses
-#from formatter.error import format_error
+from formatter.error import format_error
 from responder.answer import answer_questions
 
 
@@ -23,5 +23,4 @@ def main():
 
         return response
     except Exception as e:
-        #return format_error(e)
-        return "OMG!"
+        return format_error(e)

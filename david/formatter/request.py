@@ -3,7 +3,7 @@ import re
 from googletrans import Translator
 from unidecode import unidecode
 from autocorrect import Speller
-from david.exceptions.types import *
+from exceptions.types import *
 spell = Speller()
 
 
