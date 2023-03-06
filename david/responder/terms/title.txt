@@ -1,4 +1,6 @@
 name
+event
+events
 title
 heading
 label

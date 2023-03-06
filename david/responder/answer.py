@@ -1,6 +1,6 @@
 import re
 import os
-from .abilities import date, time, location
+from .abilities import date, time, location, title, opponent
 from .constants import *
 from exceptions.types import *
 
@@ -49,7 +49,9 @@ def search(queries, context):
     handlers = {
         "date": date.search,
         "time": time.search,
-        "location": location.search
+        "location": location.search,
+        "title": title.search,
+        "opponent": opponent.search
     }
 
     for query in queries:
