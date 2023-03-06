@@ -1,5 +1,6 @@
 from david.exceptions.types import *
 from .constants import *
+import random
 
 def format_error(exception):
 
@@ -14,10 +15,10 @@ def format_error(exception):
 
     elif exception is NoContextException:
         randint = random.randint(0,2)
-        if len(queries) > 1:
+        if len(exception.queries) > 1:
             queries_str = " and ".join([", ".join(exception.queries[:-1]), exception.queries[-1]])
         else:
-            queries_str = ", ".join(queries)
+            queries_str = ", ".join(exception.queries)
         return NO_C_RESPONSES_1a[randint] + queries_str + NO_C_RESPONSES_1b[randint] +  NO_C_RESPONSES_2[random.randint(0, 5)]
 
     # elif exception is NoResultsException:

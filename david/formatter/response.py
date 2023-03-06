@@ -1,8 +1,5 @@
-from .constants import *
 from formatter.request import translate
 from unidecode import unidecode
-import random
-
 
 def format_response(queries, context, answers):
 
