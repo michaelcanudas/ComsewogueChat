@@ -3,6 +3,8 @@ import answer
 
 from googletrans import Translator
 from unidecode import unidecode
+from autocorrect import Speller
+spell = Speller()
 
 def translate(text, target_language):
     translator = Translator()
@@ -22,6 +24,8 @@ def format(input, span):
 
     pastQueries = []
     pastContexts = []
+
+    input = spell(input)
 
     sentences = re.split(pattern, input)
 
