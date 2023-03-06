@@ -14,7 +14,11 @@ NO_Q_RESPONSES_1 = [
     "I'm uncertain about what you're asking regarding the ",
     "Unfortunately, I don't fully understand your question about the "
 ]
-NO_Q_RESPONSES_2 = [". Maybe try reformatting your question to include a question word?", ". One suggestion could be to include a question word in your question to make it more specific.", ". If you're having trouble getting the answer you're looking for, you could try reformatting your question with a question word.", ". You may want to try rephrasing your question to include a word like 'when' or 'where' to make your question clearer."]
+NO_Q_RESPONSES_2 = [
+    ". Maybe try reformatting your question to include a question word?",
+    ". One suggestion could be to include a question word in your question to make it more specific.",
+    ". If you're having trouble getting the answer you're looking for, you could try reformatting your question with a question word.",
+    ". You may want to try rephrasing your question to include a word like 'when' or 'where' to make your question clearer."]
 
 NO_C_RESPONSES_1a = [
     "What do you want to know the ", "What specific information are you seeking regarding the ",

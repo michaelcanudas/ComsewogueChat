@@ -12,7 +12,7 @@ def format_response(queries, context, answers):
 
     if len(answers) > len(queries):
         for i in range(len(queries)):
-            queries[i] = queries[i] + 's'
+            queries[i] += 's'
 
     queries_str = ", ".join(queries)
     format_answers = []
