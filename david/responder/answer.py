@@ -1,7 +1,7 @@
 import re
 import os
 from .abilities import date, time, location
-from .constants import PUNCTUATION, STOPWORDS
+from .constants import *
 
 
 def parse_request(request):
@@ -85,9 +85,6 @@ def answer_question(question, past_questions=[]):
 
 
 def answer_questions(questions, past_questions=[]):
-    if not questions:
-        raise Exception("No question found")
-
     answers = []
 
     for question in questions:
