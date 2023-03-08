@@ -25,7 +25,7 @@
             overflow-y: scroll;
             overflow-x: hidden;
             flex-direction: column-reverse;
-            max-height: calc(92% - 20px);
+            max-height: calc(92% + 10px);
         }
 
         #messages-container::-webkit-scrollbar {
@@ -36,9 +36,9 @@
             position: absolute;
             display: block;
             width: 100%;
-            height: 8%;
-            background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
-            top: 4%;
+            height: calc(8% + 30px);
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 10px, rgba(255, 255, 255, 0) 100%);
+            top: 0;
         }
 
         #span {
@@ -130,7 +130,8 @@
             width: 60px;
             height: 60px;
             border: none;
-            background-size: 105% 100%;
+            background-size: 61.2px 100%;
+            background-repeat: no-repeat;
             background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTBtmS3AkesusbdKcKV3qrypsd2Y-ew5GaNUIpUUasvA&s");
             background-color: transparent;
             z-index: 1;
@@ -140,11 +141,23 @@
             content: "";
             position: absolute;
             bottom: 0;
-            right: 15%;
-            width: 50%;
-            height: 25%;
+            left: 21px;
+            width: 30px;
+            height: 15px;
             background-color: white;
             z-index: 2;
+        }
+
+        .up-button {
+            position: absolute;
+            bottom: 25px;
+            height: 15px;
+            width: 15px;
+            border-radius: 50%;
+            background-color: #BEBEBE;
+            right: 0;
+            z-index: 4;
+            border: none;
         }
 
         .response {
@@ -229,7 +242,7 @@
     messagesContainer.addEventListener('scroll', () => {
         if (messagesContainer.scrollTop !== 0) {
             fade.style.display = 'block';
-            fade.style.height = Math.min(messagesContainer.scrollTop, (window.innerHeight * (8 / 100)));
+            fade.style.height = Math.max((Math.min(messagesContainer.scrollTop, (window.innerHeight * (8 / 100) + 30))), 15);
         } else {
             fade.style.display = 'none';
         }
@@ -258,6 +271,7 @@
     }
 
     function defaultMessage() {
+
         let response = document.createElement("div");
         response.classList.add("response");
         messagesContainer.appendChild(response);
@@ -277,6 +291,33 @@
         container.style.height = container.style.height - 60 + "px";
 
         formatPastMessages();
+        feedbackMessage();
+    }
+
+    function feedbackMessage() {
+        let response = document.createElement("div");
+        response.classList.add("response");
+        messagesContainer.appendChild(response);
+        responses.unshift(response);
+
+        response.style.display = "block";
+        response.style.height = "auto";
+        response.innerHTML = "Throughout our conversation, help improve the COMSputer by pressing the thumbs up if I respond with the answer you wanted or the thumbs down if you were looking for something else!";
+
+        let image = document.createElement("div");
+        image.classList.add("image");
+        messagesContainer.appendChild(image);
+        images.unshift(image);
+        image.style.display = "block";
+
+        let container = document.getElementById("messages-container");
+        container.style.height = container.style.height - 60 + "px";
+
+        formatPastMessages();
+        defualtResponse = responses[responses.length - 1]
+        defaultImage = images[images.length - 1]
+        defualtResponse.style.top = "30px";
+        defaultImage.style.top = "3.4px";
     }
 
     function checkReady() {
@@ -338,6 +379,10 @@
         images.unshift(image);
         image.style.display = "block";
 
+        var upButton = document.createElement("button");
+        upButton.classList.add("up-button");
+        image.appendChild(upButton);
+
         formatPastMessages(true);
     }
 
@@ -359,6 +404,12 @@
 
             let message = messages[i];
             message.style.left = container.offsetWidth - message.offsetWidth + "px";
+        }
+
+        for (let i = 0; i < (responses.length - 2); i++) {
+            let response = responses[i];
+            let image = images[i];
+            image.style.width = response.offsetWidth;
         }
 
         if (readyUp === true) {
@@ -389,10 +440,12 @@
     const scrollDownBtn = document.getElementById('scroll-down-btn');
 
     function checkButton() {
-        if (messagesContainer.scrollHeight - messagesContainer.scrollTop <= messagesContainer.clientHeight) {
-            scrollDownBtn.classList.add('hide');
-        } else {
+        if (messagesContainer.scrollHeight - messagesContainer.scrollTop > messagesContainer.clientHeight) {
             scrollDownBtn.classList.remove('hide');
+            scrollDownBtn.removeAttribute('disabled');
+        } else {
+            scrollDownBtn.classList.add('hide');
+            scrollDownBtn.setAttribute('disabled', true);
         }
     }
 
@@ -410,7 +463,8 @@
             }
         };
         scrollToBottom();
-        scrollDownBtn.classList.remove('hide');
+        scrollDownBtn.classList.add('hide');
+        scrollDownBtn.setAttribute('disabled', true);
     });
 
     window.addEventListener("load", defaultMessage);

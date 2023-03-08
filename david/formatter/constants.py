@@ -10,7 +10,7 @@ NO_QC_RESPONSES_2 = [
 
 NO_Q_RESPONSES_1 = [
     "I'm not sure what you want to know about the ",
-    "I'm not quite clear on what information you're looking for about the ",
+    "I'm not quite sure on what information you're looking for about the ",
     "I'm uncertain about what you're asking regarding the ",
     "Unfortunately, I don't fully understand your question about the "
 ]
