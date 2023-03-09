@@ -27,7 +27,7 @@ def main():
         })
     except Exception as e:
         return json.dumps({
-            "error": format_error(e),
+            "response": format_error(e),
             "success": False
         })
 
