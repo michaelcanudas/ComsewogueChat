@@ -179,6 +179,27 @@
             opacity: 0.95;
         }
 
+        .thank {
+            position: absolute;
+            font-size: 14px;
+            bottom: -20px;
+            height: 19.5px;
+            width: 100%;
+            opacity: 0;
+            color: rgba(0, 0, 0, 0.4);
+            font-family: Arial, sans-serif;
+            text-align: left;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .thank.fade-in {
+            opacity: 1;
+        }
+
+        .thank.fade-out {
+            opacity: 0;
+        }
+
         .response {
             position: relative;
             left: 10%;
@@ -413,11 +434,11 @@
             downButton.style.backgroundColor = "rgb(233,95,95)";
             downButtons.unshift(downButton);
 
-            upButton.addEventListener("click", function() {
-                giveFeedback(upButton, downButton);
+            upButton.addEventListener("click", function () {
+                giveFeedback(response, upButton, downButton);
             });
-            downButton.addEventListener("click", function() {
-                giveFeedback(upButton, downButton);
+            downButton.addEventListener("click", function () {
+                giveFeedback(response, upButton, downButton);
             });
         }
 
@@ -430,12 +451,26 @@
         formatPastMessages(true);
     }
 
-    function giveFeedback(upButton, downButton) {
+    function giveFeedback(response, upButton, downButton) {
         upButton.style.display = "none";
         upButton.setAttribute('disabled', true);
         downButton.style.display = "none";
         downButton.setAttribute('disabled', true);
+
+        let thank = document.createElement("div");
+        thank.classList.add("thank", "fade-in");
+        response.appendChild(thank);
+        thank.style.display = "block";
+        thank.innerHTML = "Thank you for the feedback!";
+
+        setTimeout(function() {
+            thank.classList.add("fade-out");
+            setTimeout(function() {
+                thank.parentNode.removeChild(thank);
+            }, 500);
+        }, 3000);
     }
+
     function formatPastMessages(readyUp = false) {
 
         let credits = document.getElementById("credits");
