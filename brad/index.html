@@ -52,6 +52,11 @@
             cursor: pointer;
         }
 
+        #span:hover {
+            background-color: #CDCDCD;
+            opacity: 0.9;
+        }
+
         #gray-rectangle {
             width: 90%;
             height: 40px;
@@ -70,7 +75,13 @@
             opacity: 0.6;
             border: none;
             background-color: transparent;
+            border-radius: 5px;
             cursor: pointer;
+        }
+
+        #send-message:hover {
+            opacity: 0.7;
+            background-color: #CACACA;
         }
 
         #message-input {
@@ -148,16 +159,24 @@
             z-index: 2;
         }
 
-        .up-button {
+        .feedback-button {
             position: absolute;
-            bottom: 25px;
-            height: 15px;
-            width: 15px;
+            bottom: -10px;
+            height: 20px;
+            width: 20px;
+            right: 2%;
+            background-size: 70% 80%;
+            background-repeat: no-repeat;
+            opacity: 0.6;
+            background-position: center center;
             border-radius: 50%;
-            background-color: #BEBEBE;
-            right: 0;
+            background-image: url("https://cdn-icons-png.flaticon.com/512/25/25297.png");
             z-index: 4;
             border: none;
+        }
+
+        .feedback-button:hover {
+            opacity: 0.95;
         }
 
         .response {
@@ -231,6 +250,8 @@
     let messages = [];
     let responses = [];
     let images = [];
+    let upButtons = [];
+    let downButtons = [];
     let pastRequests = [];
 
     let reformatRequired = false;
@@ -252,12 +273,14 @@
         let spanButton = document.getElementById("span");
         let inputMessage = document.getElementById("message-input");
         let defaultMessage = responses[responses.length - 1];
+        let feedbackMessage = responses[responses.length - 2];
         let credits = document.getElementById("credits")
         if (span === false) {
             spanButton.innerHTML = "English";
             inputMessage.placeholder = "Hazme una pregunta";
             defaultMessage.innerHTML = "¡Hola! ¡Soy el COMSputer! ¡Soy su asistente virtual para el sitio web del distrito de Comsewogue!";
             credits.value = "Hecho por Maxwell Cosenza & Michael Canudas";
+            feedbackMessage.innerHTML = "A lo largo de nuestra conversación, ayude a mejorar la COMsputer presionando los pulgares hacia arriba si respondo con la respuesta que quería o los pulgares hacia abajo si estaba buscando algo más.";
             formatPastMessages();
             span = true;
         } else {
@@ -265,6 +288,7 @@
             inputMessage.placeholder = "Ask me a question";
             defaultMessage.innerHTML = "Hello! I am the COMSputer! I am your virtual assistant for the Comsewogue District Website!";
             credits.value = "Made by Maxwell Cosenza & Michael Canudas";
+            feedbackMessage.innerHTML = "Throughout our conversation, help improve the COMsputer by pressing the thumbs up if I respond with the answer you wanted or the thumbs down if you were looking for something else!";
             formatPastMessages();
             span = false;
         }
@@ -373,19 +397,45 @@
 
         pastRequests.push(input)
 
+        let foundResults = true;
+        if (foundResults === true) {
+            let upButton = document.createElement("button");
+            upButton.classList.add("feedback-button");
+            response.appendChild(upButton);
+            upButton.style.right = "calc(3% + 20px)";
+            upButton.style.backgroundColor = "rgb(95,223,95)";
+            upButtons.unshift(upButton);
+
+            let downButton = document.createElement("button");
+            downButton.classList.add("feedback-button");
+            response.appendChild(downButton);
+            downButton.style.transform = "scaleY(-1)";
+            downButton.style.backgroundColor = "rgb(233,95,95)";
+            downButtons.unshift(downButton);
+
+            upButton.addEventListener("click", function() {
+                giveFeedback(upButton, downButton);
+            });
+            downButton.addEventListener("click", function() {
+                giveFeedback(upButton, downButton);
+            });
+        }
+
         let image = document.createElement("div");
         image.classList.add("image");
         messagesContainer.appendChild(image);
         images.unshift(image);
         image.style.display = "block";
 
-        var upButton = document.createElement("button");
-        upButton.classList.add("up-button");
-        image.appendChild(upButton);
-
         formatPastMessages(true);
     }
 
+    function giveFeedback(upButton, downButton) {
+        upButton.style.display = "none";
+        upButton.setAttribute('disabled', true);
+        downButton.style.display = "none";
+        downButton.setAttribute('disabled', true);
+    }
     function formatPastMessages(readyUp = false) {
 
         let credits = document.getElementById("credits");
@@ -404,12 +454,6 @@
 
             let message = messages[i];
             message.style.left = container.offsetWidth - message.offsetWidth + "px";
-        }
-
-        for (let i = 0; i < (responses.length - 2); i++) {
-            let response = responses[i];
-            let image = images[i];
-            image.style.width = response.offsetWidth;
         }
 
         if (readyUp === true) {
