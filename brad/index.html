@@ -403,7 +403,8 @@
 
         response.style.display = "block";
         response.style.height = "auto";
-        response.innerHTML = await fetch("https://david-sra62.ondigitalocean.app", {
+
+        const returnedData = await fetch("https://david-sra62.ondigitalocean.app", {
             method: "POST",
             mode: "cors",
             headers: {
@@ -414,11 +415,14 @@
                 "past_requests": pastRequests,
                 "spanish": span
             })
-        }).then((data) => data.text());
+        });
+
+        const data = await returnedData.json();
+        response.innerHTML = data[0];
+        const foundResults = data[1];
 
         pastRequests.push(input)
 
-        let foundResults = true;
         if (foundResults === true) {
             let upButton = document.createElement("button");
             upButton.classList.add("feedback-button");

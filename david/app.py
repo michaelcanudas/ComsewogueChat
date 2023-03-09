@@ -21,9 +21,9 @@ def main():
 
         response = format_responses(answers, span)
 
-        return response
+        return response, True
     except Exception as e:
-        return format_error(e)
+        return format_error(e), False
 
 
 @app.route("/feedback", methods=["POST"])
