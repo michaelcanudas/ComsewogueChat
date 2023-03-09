@@ -4,11 +4,11 @@ from formatter.request import format_request
 from formatter.response import format_responses
 from formatter.error import format_error
 from responder.answer import answer_questions
+import json
 
 
 app = Flask(__name__)
 CORS(app)
-
 
 @app.route("/", methods=["POST"])
 def main():
@@ -21,10 +21,15 @@ def main():
 
         response = format_responses(answers, span)
 
-        return response, True
+        return json.dumps({
+            "response": response,
+            "success": True
+        })
     except Exception as e:
-        return format_error(e), False
-
+        return json.dumps({
+            "error": format_error(e),
+            "success": False
+        })
 
 @app.route("/feedback", methods=["POST"])
 def feedback():

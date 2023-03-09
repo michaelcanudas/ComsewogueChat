@@ -417,9 +417,10 @@
             })
         });
 
-        const data = await returnedData.json();
-        response.innerHTML = data[0];
-        const foundResults = data[1];
+        const responseText = await returnedData.text();
+        const responseData = JSON.parse(responseText);
+        response.innerHTML = responseData.response;
+        const foundResults = responseData.success;
 
         pastRequests.push(input)
 
