@@ -24,7 +24,7 @@ NO_C_RESPONSES_1a = [
     "What do you want to know the ", "What specific information are you seeking regarding the ",
     "Do you have any particular questions about the "
 ]
-NO_C_RESPONSES_1b = [" of? ", " ? ", " that you would like me to answer? "]
+NO_C_RESPONSES_1b = [" of? ", "? ", " that you would like me to answer? "]
 NO_C_RESPONSES_2 = [
     "Maybe try reformatting your question to include some context?",
     "Could you please provide some additional information to help me better understand your question?",

@@ -12,6 +12,7 @@ CORS(app)
 
 @app.route("/", methods=["POST"])
 def main():
+    span = False
     try:
         request = req.get_json()
 
@@ -27,7 +28,7 @@ def main():
         })
     except Exception as e:
         return json.dumps({
-            "response": format_error(e),
+            "response": format_error(e, span),
             "success": False
         })
 

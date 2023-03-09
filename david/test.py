@@ -5,8 +5,9 @@ from responder.answer import answer_questions
 
 
 def main():
+    span = False
     try:
-        request = {"question": input(), "past_requests": [], "spanish": False}
+        request = {"question": input(), "past_requests": [], "spanish": True}
 
         questions, past_questions, span = format_request(request)
 
@@ -16,6 +17,6 @@ def main():
 
         return response
     except Exception as e:
-        return format_error(e)
+        return format_error(e, span)
 
 print(main())
