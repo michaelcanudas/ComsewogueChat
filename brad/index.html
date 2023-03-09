@@ -466,7 +466,11 @@
         thank.classList.add("thank", "fade-in");
         response.appendChild(thank);
         thank.style.display = "block";
-        thank.innerHTML = "Thank you for the feedback!";
+        if (span === false) {
+            thank.innerHTML = "Thank you for the feedback!";
+        } else {
+            thank.innerHTML = "¡Gracias por los comentarios!";
+        }
 
         setTimeout(function() {
             thank.classList.add("fade-out");
