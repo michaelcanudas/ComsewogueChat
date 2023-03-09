@@ -1,6 +1,7 @@
 import re
 import os
-from .abilities import date, time, location, title, opponent
+from .abilities import date, location, opponent, time, title
+from .ranking.rank import rank
 from .constants import *
 from exceptions.types import *
 
@@ -48,16 +49,16 @@ def search(queries, context):
 
     handlers = {
         "date": date.search,
-        "time": time.search,
         "location": location.search,
-        "title": title.search,
-        "opponent": opponent.search
+        "opponent": opponent.search,
+        "time": time.search,
+        "title": title.search
     }
 
     for query in queries:
         results = handlers[query](context)
 
-        answers.extend(results)
+        answers.append(results)
 
     return answers
 
@@ -91,24 +92,25 @@ def answer_question(question, past_questions=[]):
     if not context:
         raise NoContextException(queries)
 
-    answer = search(queries, context)
+    answers = search(queries, context)
 
-    if not answer:
+    if not answers:
         raise NoResultsException(queries, context)
 
-    return answer, queries, context
+    return answers, queries, context
 
 
 def answer_questions(questions, past_questions=[]):
     if not questions:
         raise NoQueryAndContextException()
 
-    answers = []
+    final_answers = []
 
     for question in questions:
-        answer, queries, contexts = answer_question(question, past_questions)
+        answers, queries, context = answer_question(question, past_questions)
         past_questions.append(question)
 
-        answers.append([queries, contexts, answer])
+        final_answer = rank(answers, queries, context)
+        final_answers.append(final_answer)
 
-    return answers
+    return final_answers

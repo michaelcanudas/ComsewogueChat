@@ -1,0 +1,1 @@
+# rank a result based on how close it is to todays

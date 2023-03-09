@@ -24,3 +24,17 @@ def main():
         return response
     except Exception as e:
         return format_error(e)
+
+
+@app.route("/feedback", methods=["POST"])
+def feedback():
+    try:
+        request = req.get_json()
+
+        question = request["question"]
+        answer = request["answer"]
+        feedback = request["feedback"]
+
+        pass
+    except Exception as e:
+        return "omg..."
