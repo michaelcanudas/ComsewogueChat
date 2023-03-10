@@ -26,7 +26,7 @@ def format_error(exception, span):
 
     elif type(exception) == NoResultsException:
         if len(exception.queries) > 1:
-            queries_str = " and ".join([", ".join(exception.queries[:-1]), exception.queries[-1]])
+            queries_str = " or ".join([", ".join(exception.queries[:-1]), exception.queries[-1]])
         else:
             queries_str = ", ".join(exception.queries)
         error = NO_R_RESPONSES_1[random.randint(0, 3)] + queries_str + " of " + " ".join(exception.context) + NO_R_RESPONSES_2[random.randint(0, 2)]
