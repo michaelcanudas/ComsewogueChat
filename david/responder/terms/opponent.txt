@@ -4,4 +4,3 @@ against
 verse
 vs
 versing
-who

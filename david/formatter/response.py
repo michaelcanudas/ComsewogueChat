@@ -32,7 +32,7 @@ def format_responses(answers, span):
     response = ""
 
     for answer in answers:
-        response += " " + format_response(answer[0], answer[1], answer[2])
+        response += format_response(answer[0], answer[1], answer[2])
 
     if span:
         response = translate(str(response), "spanish")
