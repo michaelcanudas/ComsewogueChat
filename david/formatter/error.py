@@ -24,11 +24,16 @@ def format_error(exception, span):
             queries_str = ", ".join(exception.queries)
         error = NO_C_RESPONSES_1a[randint] + queries_str + NO_C_RESPONSES_1b[randint] +  NO_C_RESPONSES_2[random.randint(0, 5)]
 
-    # elif exception is NoResultsException:
-        # return "Sorry, I could find any results for the " ... " of " ... ". Maybe try rephrasing your question or "
+    elif type(exception) == NoResultsException:
+        if len(exception.queries) > 1:
+            queries_str = " and ".join([", ".join(exception.queries[:-1]), exception.queries[-1]])
+        else:
+            queries_str = ", ".join(exception.queries)
+        error = NO_R_RESPONSES_1[random.randint(0, 3)] + queries_str + " of " + " ".join(exception.context) + NO_R_RESPONSES_2[random.randint(0, 2)]
 
     else:
-        error = "wat the heck!"
+        error = "An unexpected error has occured. Our team has been notified of the issue and is working to resolve it. Please try again later"
+        # error = "wat the heck!"
 
     if not span:
         return error

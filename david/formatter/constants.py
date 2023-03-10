@@ -33,3 +33,12 @@ NO_C_RESPONSES_2 = [
     "Could you provide some additional context?",
     "Could you rephrase your question or provide some more context to help me understand?"
 ]
+
+NO_R_RESPONSES_1 = [
+    "I'm sorry, but I wasn't able to find any information about the ", "I'm afraid I couldn't find anything related to the ",
+    "Unfortunately, I couldn't find any results for the ", "I apologize, but I wasn't able to locate any results for the ",
+]
+NO_R_RESPONSES_2 = [
+    ". Can you try rephrasing your question?", ". Try rewording what you're looking for?",
+    ". Can you provide any more details about what you're looking for?"
+]

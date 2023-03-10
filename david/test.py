@@ -7,7 +7,7 @@ from responder.answer import answer_questions
 def main():
     span = False
     try:
-        request = {"question": input(), "past_requests": [], "spanish": True}
+        request = {"question": input(), "past_requests": [], "spanish": False}
 
         questions, past_questions, span = format_request(request)
 

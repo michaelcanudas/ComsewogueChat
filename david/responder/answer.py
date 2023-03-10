@@ -60,7 +60,10 @@ def search(queries, context):
 
         answers.append(results)
 
-    return answers
+    if all(not sublist for sublist in answers):
+        return []
+    else:
+        return answers
 
 
 def answer_question(question, past_questions=[]):
