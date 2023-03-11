@@ -57,6 +57,51 @@
             opacity: 0.9;
         }
 
+        #phone {
+            background-color: white;
+            width: 90%;
+            height: 94%;
+            position: absolute;
+            border: 10px solid #BEBEBE;
+            top: calc(2% - 10px);
+            left: calc(5% - 10px);
+            border-radius: 2vh;
+        }
+
+        .phone-text {
+            color: #BEBEBE;
+            font-size: Max(4vh, 4vw);
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: auto;
+            position: absolute;
+            top: 40%;
+            height: 70%;
+            left: 3%;
+            transform: translateY(-50%);
+            width: 94%;
+        }
+
+        #clear-btn {
+            position: absolute;
+            bottom: calc(5% + 5px);
+            left: 50%;
+            width: 80%;
+            height: 10%;
+            background-color: #0d4a83;
+            border: none;
+            border-radius: 4%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: Max(4vh, 3vw);
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #clear-btn:hover {
+            filter: brightness(85%);
+        }
+
         #gray-rectangle {
             width: 90%;
             height: 40px;
@@ -253,6 +298,14 @@
 <body>
 <div id="messages-container"></div>
 <div id="fade"></div>
+<div id="phone">
+    <div class="phone-text">
+        Please note that COMSputer.com is best viewed on a desktop or laptop. We apologize for any inconvenience this
+        may cause to mobile users. Our team is currently developing an app to better support mobile users. Thank you for
+        your patience and understanding.
+    </div>
+    <button id="clear-btn" onclick="clearMessage()">Dismiss</button>
+</div>
 <div id="gray-rectangle">
     <input type="text" id="credits" value="Made by Maxwell Cosenza & Michael Canudas" readonly>
     <button id="send-message" onclick="checkReady()">
@@ -268,6 +321,8 @@
 
 <script>
     let messagesContainer = document.getElementById("messages-container");
+    let grayRec = document.getElementById("gray-rectangle");
+    let phone = document.getElementById("phone");
     let messages = [];
     let responses = [];
     let images = [];
@@ -278,6 +333,61 @@
     let reformatRequired = false;
     let ready = true
     let span = false
+
+    var userAgent = navigator.userAgent.toLowerCase();
+    var isMobile = /mobile|android|iphone|ipad|phone/i.test(userAgent);
+    if (isMobile) {
+        phone.style.display = "block"
+        messagesContainer.style.display = "None"
+        grayRec.style.display = "None"
+    } else {
+        phone.style.display = "None"
+        messagesContainer.style.display = "Block"
+        grayRec.style.display = "Block"
+    }
+
+    const textList1 = ["try, ", "ask, ", "A common question I get is, "];
+    const probabilities1 = [0.6, 0.35, 0.05];
+    const textList2 = [
+        "\"When's the next Board of Education Meeting?\"",
+        "\"What time does the football game start?\"",
+        "\"Who is the Boys Tennis team playing next?\"",
+        "\"What day can I get my sports physical?\"",
+        "\"Where is the girls volleyball game?\"",
+        "\"When does winter recess start?\"",
+        "\"What district-wide events are tomorrow?\"",
+    ]
+    const probabilities2 = [0.2, 0.2, 0.15, 0.15, 0.15, 0.1, 0.05]
+
+    const inputBox = document.getElementById("message-input");
+    setInterval(() => {
+        const randomIndex1 = weightedRandomIndex(probabilities1);
+        const randomIndex2 = weightedRandomIndex(probabilities2);
+        if (!span) {
+            inputBox.setAttribute("placeholder", textList1[randomIndex1] + textList2[randomIndex2]);
+            setTimeout(() => {
+                inputBox.setAttribute("placeholder", "Ask me a question");
+            }, Math.floor(Math.random() * (10001 - 3000) + 3000));
+        }
+    }, Math.floor(Math.random() * (20001 - 12500) + 12500));
+
+    function weightedRandomIndex(probabilities) {
+        const r = Math.random();
+        let cumulativeProbability = 0;
+        for (let i = 0; i < probabilities.length; i++) {
+            cumulativeProbability += probabilities[i];
+            if (r < cumulativeProbability) {
+                return i;
+            }
+        }
+    }
+
+
+    function clearMessage() {
+        phone.style.display = "None"
+        messagesContainer.style.display = "Block"
+        inputBox.style.display = "Block"
+    }
 
     const fade = document.getElementById('fade');
 
@@ -472,9 +582,9 @@
             thank.innerHTML = "¡Gracias por los comentarios!";
         }
 
-        setTimeout(function() {
+        setTimeout(function () {
             thank.classList.add("fade-out");
-            setTimeout(function() {
+            setTimeout(function () {
                 thank.parentNode.removeChild(thank);
             }, 500);
         }, 3000);
