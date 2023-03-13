@@ -183,9 +183,9 @@
             position: relative;
             left: calc(10.3% - 60px);
             top: -26.6px;
+            border: none;
             width: 60px;
             height: 60px;
-            border: none;
             background-size: 61.2px 100%;
             background-repeat: no-repeat;
             background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTBtmS3AkesusbdKcKV3qrypsd2Y-ew5GaNUIpUUasvA&s");
@@ -197,9 +197,9 @@
             content: "";
             position: absolute;
             bottom: 0;
-            left: 21px;
-            width: 30px;
-            height: 15px;
+            left: 30%;
+            width: 50%;
+            height: 25%;
             background-color: white;
             z-index: 2;
         }
@@ -309,8 +309,7 @@
 <div id="gray-rectangle">
     <input type="text" id="credits" value="Made by Maxwell Cosenza & Michael Canudas" readonly>
     <button id="send-message" onclick="checkReady()">
-        <img src="https://icons.veryicon.com/png/o/miscellaneous/ui-basic-linear-icon/send-message-2-2.png" width="25px"
-             height="30px"/>
+        <img src="https://icons.veryicon.com/png/o/miscellaneous/ui-basic-linear-icon/send-message-2-2.png" width = "25px" height = "30px"/>
     </button>
     <input id="message-input" type="text" placeholder="Ask me a question">
     <button id="span" onclick="spanish()">Español</button>
@@ -323,6 +322,7 @@
     let messagesContainer = document.getElementById("messages-container");
     let grayRec = document.getElementById("gray-rectangle");
     let phone = document.getElementById("phone");
+    let scrollDownBtn = document.getElementById('scroll-down-btn');
     let messages = [];
     let responses = [];
     let images = [];
@@ -337,13 +337,38 @@
     var userAgent = navigator.userAgent.toLowerCase();
     var isMobile = /mobile|android|iphone|ipad|phone/i.test(userAgent);
     if (isMobile) {
-        phone.style.display = "block"
-        messagesContainer.style.display = "None"
-        grayRec.style.display = "None"
+        var metaViewport = document.querySelector("meta[name=viewport]");
+        if (metaViewport) {
+            metaViewport.setAttribute("content", "width=device-width, initial-scale=1.0, user-scalable=no");
+        }
+
+        phone.style.display = "block";
+        messagesContainer.style.display = "None";
+        grayRec.style.display = "None";
+
+        let credits = document.getElementById("credits");
+        let sendButtonImg = document.querySelector('#send-message img');
+        let messageInput = document.getElementById("message-input")
+        let spanButton = document.getElementById("span")
+
+        messageInput.style.fontSize = "50px";
+        messageInput.style.padding = "20px";
+        messageInput.style.width = "85%";
+        messagesContainer.style.bottom = "calc(4% + 100px)";
+        messagesContainer.style.maxHeight = "calc(92% - 110px)";
+        sendButtonImg.width = 95;
+        sendButtonImg.height = 112;
+        spanButton.style.fontSize = "36px";
+        spanButton.style.padding = "10px";
+        spanButton.style.right = "3%";
+        grayRec.style.height = "120px";
+        grayRec.style.bottom = grayRec.style.bottom + 40;
+        credits.style.display = "None";
+        grayRec.style.borderRadius = "25px";
     } else {
-        phone.style.display = "None"
-        messagesContainer.style.display = "Block"
-        grayRec.style.display = "Block"
+        phone.style.display = "None";
+        messagesContainer.style.display = "Block";
+        grayRec.style.display = "Block";
     }
 
     const textList1 = ["try, ", "ask, ", "A common question I get is, "];
@@ -351,9 +376,9 @@
     const textList2 = [
         "\"When's the next Board of Education Meeting?\"",
         "\"What time does the football game start?\"",
-        "\"Who is the Boys Tennis team playing next?\"",
+        "\"Who is the Boys Tennis Team playing next?\"",
         "\"What day can I get my sports physical?\"",
-        "\"Where is the girls volleyball game?\"",
+        "\"Where is the Girls Volleyball game?\"",
         "\"When does winter recess start?\"",
         "\"What district-wide events are tomorrow?\"",
     ]
@@ -363,7 +388,7 @@
     setInterval(() => {
         const randomIndex1 = weightedRandomIndex(probabilities1);
         const randomIndex2 = weightedRandomIndex(probabilities2);
-        if (!span) {
+        if (!span && !isMobile) {
             inputBox.setAttribute("placeholder", textList1[randomIndex1] + textList2[randomIndex2]);
             setTimeout(() => {
                 inputBox.setAttribute("placeholder", "Ask me a question");
@@ -429,6 +454,10 @@
 
         let response = document.createElement("div");
         response.classList.add("response");
+        if (isMobile) {
+            mobileFormat(response, 65)
+            response.style.left = "20%";
+        }
         messagesContainer.appendChild(response);
         responses.unshift(response);
 
@@ -438,6 +467,10 @@
 
         let image = document.createElement("div");
         image.classList.add("image");
+        if (isMobile) {
+            image.style.transform = "scale(3)";
+            image.style.left = "calc(10.3% - 20px)";
+        }
         messagesContainer.appendChild(image);
         images.unshift(image);
         image.style.display = "block";
@@ -452,6 +485,10 @@
     function feedbackMessage() {
         let response = document.createElement("div");
         response.classList.add("response");
+        if (isMobile) {
+            mobileFormat(response, 65)
+            response.style.left = "20%";
+        }
         messagesContainer.appendChild(response);
         responses.unshift(response);
 
@@ -461,6 +498,10 @@
 
         let image = document.createElement("div");
         image.classList.add("image");
+        if (isMobile) {
+            image.style.transform = "scale(3)";
+            image.style.left = "calc(10.3% - 20px)";
+        }
         messagesContainer.appendChild(image);
         images.unshift(image);
         image.style.display = "block";
@@ -496,6 +537,9 @@
 
         let message = document.createElement("div");
         message.classList.add("message");
+        if (isMobile) {
+            mobileFormat(message, 80)
+        }
         messagesContainer.appendChild(message);
         messages.unshift(message);
 
@@ -508,6 +552,10 @@
 
         let response = document.createElement("div");
         response.classList.add("response");
+        if (isMobile) {
+            mobileFormat(response, 65)
+            response.style.left = "20%";
+        }
         messagesContainer.appendChild(response);
         responses.unshift(response);
 
@@ -538,7 +586,6 @@
             let upButton = document.createElement("button");
             upButton.classList.add("feedback-button");
             response.appendChild(upButton);
-            upButton.style.right = "calc(3% + 20px)";
             upButton.style.backgroundColor = "rgb(95,223,95)";
             upButtons.unshift(upButton);
 
@@ -548,6 +595,15 @@
             downButton.style.transform = "scaleY(-1)";
             downButton.style.backgroundColor = "rgb(233,95,95)";
             downButtons.unshift(downButton);
+
+            if (isMobile) {
+                upButton.style.transform = "scale(4)";
+                downButton.style.transform = "scale(-4)";
+                upButton.style.right = "calc(6% + 100px)";
+                downButton.style.right = "40px"
+            } else {
+                upButton.style.right = "calc(3% + 20px)";
+            }
 
             upButton.addEventListener("click", function () {
                 giveFeedback(response, upButton, downButton);
@@ -559,11 +615,22 @@
 
         let image = document.createElement("div");
         image.classList.add("image");
+        if (isMobile) {
+            image.style.transform = "scale(3)";
+            image.style.left = "calc(10.3% - 20px)";
+        }
         messagesContainer.appendChild(image);
         images.unshift(image);
         image.style.display = "block";
 
         formatPastMessages(true);
+    }
+
+    function mobileFormat(item, width) {
+        item.style.maxWidth = width + "%";
+        item.style.fontSize = "50px";
+        item.style.padding = "30px";
+        item.style.borderRadius = "30px 30px 30px 0px";
     }
 
     function giveFeedback(response, upButton, downButton) {
@@ -582,6 +649,12 @@
             thank.innerHTML = "¡Gracias por los comentarios!";
         }
 
+        if (isMobile) {
+            thank.style.fontSize = "35px";
+        }
+
+        formatPastMessages();
+
         setTimeout(function () {
             thank.classList.add("fade-out");
             setTimeout(function () {
@@ -595,13 +668,12 @@
         let credits = document.getElementById("credits");
         let container = document.getElementById("messages-container")
 
-        if (window.innerHeight < 570) {
+        if (window.innerHeight < 570 || isMobile) {
             credits.style.display = "none";
         } else {
             credits.style.display = "flex";
         }
 
-        container.scrollTop = container.scrollHeight;
         container.style.width = "95%";
 
         for (let i = 0; i < messages.length; i++) {
@@ -609,6 +681,8 @@
             let message = messages[i];
             message.style.left = container.offsetWidth - message.offsetWidth + "px";
         }
+
+        container.scrollTop = container.scrollHeight;
 
         if (readyUp === true) {
             ready = true;
@@ -635,10 +709,8 @@
         }
     });
 
-    const scrollDownBtn = document.getElementById('scroll-down-btn');
-
     function checkButton() {
-        if (messagesContainer.scrollHeight - messagesContainer.scrollTop > messagesContainer.clientHeight) {
+        if (messagesContainer.scrollHeight - messagesContainer.scrollTop > messagesContainer.clientHeight && !isMobile) {
             scrollDownBtn.classList.remove('hide');
             scrollDownBtn.removeAttribute('disabled');
         } else {

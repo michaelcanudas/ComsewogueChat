@@ -8,6 +8,7 @@ from exceptions.types import *
 
 def parse_request(request):
     request = request.replace("-", " ")
+    request = request.replace("JV", "Junior Varsity")
     request = re.sub(r'[^a-zA-Z ]', '', request.lower())
     words = request.split()
 
