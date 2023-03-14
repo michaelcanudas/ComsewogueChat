@@ -38,4 +38,4 @@ def rank(answers, queries, context):
             case "title":
                 query_answers.append(max_answer["entry"][0])
 
-    return [query_answers, queries, max_answer["entry"][0]]
+    return [query_answers, queries, context]
