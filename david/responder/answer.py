@@ -1,9 +1,9 @@
 import re
 import os
-from .abilities import date, location, opponent, time, title
+from exceptions.types import *
 from .ranking.rank import rank
 from .constants import *
-from exceptions.types import *
+from .utils import search_db
 
 
 def parse_request(request):
@@ -46,26 +46,8 @@ def classify_queries(queries):
     return list(results)
 
 
-def search(queries, context):
-    answers = []
-
-    handlers = {
-        "date": date.search,
-        "location": location.search,
-        "opponent": opponent.search,
-        "time": time.search,
-        "title": title.search
-    }
-
-    for query in queries:
-        results = handlers[query](context)
-
-        answers.append(results)
-
-    if all(not sublist for sublist in answers):
-        return []
-    else:
-        return answers
+def search(context):
+    return search_db(context, 5, 6)
 
 
 def answer_question(question, past_questions=[]):
@@ -97,12 +79,14 @@ def answer_question(question, past_questions=[]):
     if not context:
         raise NoContextException(queries)
 
-    answers = search(queries, context)
+    answers = search(context)
 
     if not answers:
         raise NoResultsException(queries, context)
 
-    return answers, queries, context
+    answer = rank(answers, queries, context)
+
+    return answer, queries, context
 
 
 def answer_questions(questions, past_questions=[]):
@@ -112,10 +96,9 @@ def answer_questions(questions, past_questions=[]):
     final_answers = []
 
     for question in questions:
-        answers, queries, context = answer_question(question, past_questions)
-        past_questions.append(question)
+        answer, queries, context = answer_question(question, past_questions)
 
-        final_answer = rank(answers, queries, context)
-        final_answers.append(final_answer)
+        past_questions.append(question)
+        final_answers.append(answer)
 
     return final_answers

@@ -1,3 +1,7 @@
-NEXT_WEIGHT = 1
-LAST_WEIGHT = 1
-SCHOOL_WEIGHT = 1
+KEYWORD_WEIGHT = 1
+SCHOOL_KEYWORDS = ["high", "highschool", "middle", "middleschool", "varsity", "junior"]
+GENDER_KEYWORDS = ["boy", "boys", "girl", "girls"]
+POSITION_KEYWORDS = ["next", "last"]
+
+PROXIMITY_WEIGHT = 1
+DISCRIMINATION_WEIGHT = 1
