@@ -30,7 +30,7 @@ def rank(answers, queries, context):
             case "location":
                 query_answers.append(max_answer["entry"][3])
             case "opponent":
-                query_answers.append(max_answer["entry"][0])
+                query_answers.append(max_answer["entry"][0].split(":")[1].replace("@", "").replace("Comsewogue Jfk", "").replace("Comsewogue", "").strip())
             case "time":
                 query_answers.append(max_answer["entry"][2])
             case "title":
