@@ -4,7 +4,7 @@ import string
 PUNCTUATION = string.punctuation
 STOPWORDS = [
     'same', 'other', 'url', 'subject',
-    'time', 'when', 'above', 'dont',
+    'time', 'when', 'whens', 'above', 'dont',
     'these', 'school', 'why', 'his',
     'as', 'be', 'about', 'all', 'done',
     'this', 'has', 'below', 'very',
