@@ -2,6 +2,5 @@ location
 address
 place
 venue
-school
 building
 where

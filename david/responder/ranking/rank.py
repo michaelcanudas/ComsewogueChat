@@ -1,40 +1,39 @@
-from .modules import proximity
+from .modules import keyword, proximity, similarity
 
 
 def rank(answers, queries, context):
-    all_answers = []
-    for answer in answers:
-        all_answers.extend(answer)
+    ranks = []
+    for answer in answers[0]:
+        ranks.append({
+            "answer": answer,
+            "score": 0
+        })
 
-    scores = []
-    for answer in all_answers:
-        scores.append([answer, [] * len(queries)])
+    keyword.rank(ranks, queries, context)
 
-    # every answer option is given a score in each category of query
+    #proximity.rank(ranks, context)
 
-    # every answer is given multiple scores, one for each
-    # answers will be [
-    #       [query answer, query answer],
-    #       [query answer, query answer, query answer]
-    # ]
+    #similarity.rank(ranks, context)
 
-    # queries will be [
-    #       query,
-    #       query
-    # ]
+    max_score = -1
+    max_answer = {}
+    for entry in ranks:
+        if entry["score"] > max_score:
+            max_score = entry["score"]
+            max_answer = entry["answer"]
 
-    # context will be [
-    #       context,
-    #       context,
-    #       context
-    # ]
+    query_answers = []
+    for query in queries:
+        match query:
+            case "date":
+                query_answers.append(max_answer["entry"][1])
+            case "location":
+                query_answers.append(max_answer["entry"][3])
+            case "opponent":
+                query_answers.append(max_answer["entry"][0])
+            case "time":
+                query_answers.append(max_answer["entry"][2])
+            case "title":
+                query_answers.append(max_answer["entry"][0])
 
-    final_answers = []
-    final_context = []
-
-    for answer in answers:
-        final_answers.append(answer[0]["query"])
-        final_context.append(answer[0]["entry"][0])
-
-    # return [final_answers, queries, context]
-    return [final_answers, queries, final_context]
+    return [query_answers, queries, context]

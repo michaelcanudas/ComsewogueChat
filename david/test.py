@@ -20,7 +20,8 @@ def main():
 
         return "[SUCCESS]", response, t1 - t0
     except Exception as e:
-        return "[FAIL]", format_error(e, span), "NONE"
+        raise e
+        #return "[FAIL]", format_error(e, span), "NONE"
 
 
 test = main()
