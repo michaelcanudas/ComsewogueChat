@@ -350,12 +350,14 @@
         let sendButtonImg = document.querySelector('#send-message img');
         let messageInput = document.getElementById("message-input")
         let spanButton = document.getElementById("span")
+        let fade = document.getElementById("fade")
 
+        fade.style.display = "None";
         messageInput.style.fontSize = "50px";
         messageInput.style.padding = "20px";
         messageInput.style.width = "85%";
         messagesContainer.style.bottom = "calc(4% + 100px)";
-        messagesContainer.style.maxHeight = "calc(92% - 110px)";
+        messagesContainer.style.maxHeight = "calc(91% - 110px)";
         sendButtonImg.width = 95;
         sendButtonImg.height = 112;
         spanButton.style.fontSize = "36px";
@@ -380,7 +382,7 @@
         "\"What day can I get my sports physical?\"",
         "\"Where is the Girls Volleyball game?\"",
         "\"When does winter recess start?\"",
-        "\"What district-wide events are tomorrow?\"",
+        "\"What district-wide events are tomorrow?\""
     ]
     const probabilities2 = [0.2, 0.2, 0.15, 0.15, 0.15, 0.1, 0.05]
 
