@@ -436,7 +436,8 @@
         if (span === false) {
             spanButton.innerHTML = "English";
             inputMessage.placeholder = "Hazme una pregunta";
-            defaultMessage.innerHTML = "¡Hola! ¡Soy el COMSputer! ¡Soy su asistente virtual para el sitio web del distrito de Comsewogue!";
+            //defaultMessage.innerHTML = "¡Hola! ¡Soy el COMSputer! ¡Soy su asistente virtual para el sitio web del distrito de Comsewogue!";
+            defaultMessage.innerHTML = "¡Hola! ¡Soy el COMSputer! ¡Soy su asistente virtual para el sitio web del distrito de Comsewogue! Hágame una pregunta como, \'¿Qué día es la próxima reunión de la Junta de Educación?\' o \'¿A qué hora comenzó el último partido de fútbol?\'";
             credits.value = "Hecho por Maxwell Cosenza & Michael Canudas";
             feedbackMessage.innerHTML = "A lo largo de nuestra conversación, ayude a mejorar la COMsputer presionando los pulgares hacia arriba si respondo con la respuesta que quería o los pulgares hacia abajo si estaba buscando algo más.";
             formatPastMessages();
@@ -444,9 +445,10 @@
         } else {
             spanButton.innerHTML = "Español";
             inputMessage.placeholder = "Ask me a question";
-            defaultMessage.innerHTML = "Hello! I am the COMSputer! I am your virtual assistant for the Comsewogue District Website!";
+            // defaultMessage.innerHTML = "Hello! I am the COMSputer! I am your virtual assistant for the Comsewogue District Website!";
+            defaultMessage.innerHTML = "Hello! I am the COMSputer! I am your virtual assistant for the Comsewogue District Website! Ask me a question like, \'What day is the next Board of Education Meeting?\' or \'What time did the last football game start?\'";
             credits.value = "Made by Maxwell Cosenza & Michael Canudas";
-            feedbackMessage.innerHTML = "Throughout our conversation, help improve the COMsputer by pressing the thumbs up if I respond with the answer you wanted or the thumbs down if you were looking for something else!";
+            feedbackMessage.innerHTML = "Throughout our conversation, help improve the COMSputer by pressing the thumbs up if I respond with the answer you wanted or the thumbs down if you were looking for something else!";
             formatPastMessages();
             span = false;
         }
@@ -465,7 +467,8 @@
 
         response.style.display = "block";
         response.style.height = "auto";
-        response.innerHTML = "Hello! I am the COMSputer! I am your virtual assistant for the Comsewogue District Website!";
+        //response.innerHTML = "Hello! I am the COMSputer! I am your virtual assistant for the Comsewogue District Website!";
+        response.innerHTML = "Hello! I am the COMSputer! I am your virtual assistant for the Comsewogue District Website! Ask me a question like, \'What day is the next Board of Education Meeting?\' or \'What time did the last football game start?\'";
 
         let image = document.createElement("div");
         image.classList.add("image");
