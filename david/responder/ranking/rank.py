@@ -1,9 +1,9 @@
-from .modules import keyword, proximity, similarity
+from .modules import keyword, proximity, discrimination, similarity
 
 
 def rank(answers, queries, context):
     ranks = []
-    for answer in answers[0]:
+    for answer in answers:
         ranks.append({
             "answer": answer,
             "score": 0
@@ -11,7 +11,9 @@ def rank(answers, queries, context):
 
     keyword.rank(ranks, queries, context)
 
-    #proximity.rank(ranks, context)
+    proximity.rank(ranks, queries, context)
+
+    discrimination.rank(ranks, queries, context)
 
     #similarity.rank(ranks, context)
 

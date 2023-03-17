@@ -37,3 +37,6 @@ STOPWORDS = [
     'name', 'where', 'then', 'because', 'are', 'begin',
     'label', 'start', 'whats'
 ]
+COMMONWORDS = [
+    "game", "meet", "match", "varsity", "junior"
+]
