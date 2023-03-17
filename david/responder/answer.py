@@ -79,7 +79,10 @@ def answer_question(question, past_questions=[]):
     if not context:
         raise NoContextException(queries)
 
-    answers = search(context)
+    try:
+        answers = search(context)
+    except Exception as e:
+        raise NoResultsException(queries, context)
 
     if not answers:
         raise NoResultsException(queries, context)

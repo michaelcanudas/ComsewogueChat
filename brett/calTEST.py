@@ -29,8 +29,7 @@ def formatinfo(list):
 
 
 
-
-req = { "portletInstanceId":"10184","primaryCalendarId":"60310","calendarIds":["60310"],"localFromDate":startISO,"localToDate":endISO,"filterFieldValue":"","searchText":"","categoryFieldValue":"","filterOptions":[{"__type":"ModernCalendarDropdownOption","text":"Name","value":"Name"}] }
+req = { "portletInstanceId":"116380","primaryCalendarId":"1029956","calendarIds":["1029956"],"localFromDate":startISO,"localToDate":endISO,"filterFieldValue":"","searchText":"","categoryFieldValue":"","filterOptions":[{"__type":"ModernCalendarDropdownOption","text":"Name","value":"Name"}] }
 res = requests.post("https://www.comsewogue.k12.ny.us/Common/controls/WorkspaceCalendar/ws/WorkspaceCalendarWS.asmx/Modern_Events", json=req)
 data = json.loads(res.text)
 
