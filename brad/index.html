@@ -76,7 +76,7 @@
             margin: auto;
             position: absolute;
             top: 40%;
-            height: 50%;
+            height: 70%;
             left: 3%;
             transform: translateY(-50%);
             width: 94%;
@@ -111,7 +111,6 @@
             left: 5%;
             position: fixed;
             right: 5%;
-            display: none;
         }
 
         #send-message {
@@ -301,8 +300,11 @@
 <div id="fade"></div>
 <div id="phone">
     <div class="phone-text">
-        The COMSputer is currently updating. The update should be completed today, March 17th, by 5:00 PM Eastern Time. We apoligize for any inconvenience.
+        Please note that COMSputer.com is best viewed on a desktop or laptop. We apologize for any inconvenience this
+        may cause to mobile users. Our team is currently developing an app to better support mobile users. Thank you for
+        your patience and understanding.
     </div>
+    <button id="clear-btn" onclick="clearMessage()">Dismiss</button>
 </div>
 <div id="gray-rectangle">
     <input type="text" id="credits" value="Made by Maxwell Cosenza & Michael Canudas" readonly>
@@ -334,7 +336,7 @@
 
     var userAgent = navigator.userAgent.toLowerCase();
     var isMobile = /mobile|android|iphone|ipad|phone/i.test(userAgent);
-    if (isMobile || !ismobile) {
+    if (isMobile) {
         var metaViewport = document.querySelector("meta[name=viewport]");
         if (metaViewport) {
             metaViewport.setAttribute("content", "width=device-width, initial-scale=1.0, user-scalable=no");
@@ -373,11 +375,16 @@
 
     const textList1 = ["try, ", "ask, ", "A common question I get is, "];
     const probabilities1 = [0.6, 0.35, 0.05];
-    const textList2 = ["\"What time does the rivalry baseball game start?\"", "\"Who is the Boys Tennis Team playing next?\"", "\"What day can I get my sports physical?\"", "\"Where is the Girls Volleyball game?\"", "\"When does winter recess start?\"", "\"What district-wide events are tomorrow?\""];
-
+    const textList2 = [
         //"\"When's the next Board of Education Meeting?\"",
         //"\"What time does the football game start?\"",
-
+        "\"What time does the rivalry baseball game start?\"",
+        "\"Who is the Boys Tennis Team playing next?\"",
+        "\"What day can I get my sports physical?\"",
+        "\"Where is the Girls Volleyball game?\"",
+        "\"When does winter recess start?\"",
+        "\"What district-wide events are tomorrow?\""
+    ]
     //const probabilities2 = [0.2, 0.2, 0.15, 0.15, 0.15, 0.1, 0.05]
     const probabilities2 = [ 0.25, 0.20, 0.20, 0.20, 0.1, 0.05]
 
