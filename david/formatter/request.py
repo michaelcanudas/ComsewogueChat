@@ -38,9 +38,10 @@ def format_request(request, correct):
     questions = re.split(pattern, question)
 
     past_formatted_questions = []
-    for q in past_questions:
-        if correct:
+    for i, q in enumerate(past_questions):
+        if correct and i != len(past_questions) - 1:
             q = spell(q)
         past_formatted_questions.extend(re.split(pattern, q))
+
 
     return questions, past_formatted_questions, span
