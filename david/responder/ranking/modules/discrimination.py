@@ -32,12 +32,12 @@ def rank(ranks, queries, context):
         best_entry = None
 
         for entry in ranks:
-            date = datetime.datetime.strptime(entry["answer"]["entry"][1], "%B %d, %Y").date()
+            date = datetime.datetime.strptime(entry["answer"]["entry"][1].split("; ")[0], "%B %d, %Y").date()
 
             if condition(date, best_date):
                 best_date = date
                 best_entry = entry
 
         if best_date:
-            best_entry["score"] += KEYWORD_WEIGHT
+            best_entry["score"] += DISCRIMINATION_WEIGHT
 

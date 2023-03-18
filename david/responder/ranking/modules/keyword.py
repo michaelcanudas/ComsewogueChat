@@ -5,13 +5,10 @@ from .constants import *
 
 def rank(ranks, queries, context):
     school_context = list(set(context) & set(SCHOOL_KEYWORDS))
-    gender_context = list(set(context) & set(GENDER_KEYWORDS))
     position_context = list(set(context) & set(POSITION_KEYWORDS))
 
     for word in school_context:
         rank_school(ranks, queries, context, word)
-    for word in gender_context:
-        rank_gender(ranks, queries, context, word)
     for word in position_context:
         rank_position(ranks, queries, context, word)
 
@@ -39,18 +36,6 @@ def rank_school(ranks, queries, context, word):
         raise NoResultsException(queries, context)
 
 
-def rank_gender(ranks, queries, context, word):
-    for entry in ranks:
-        words = entry["answer"]["entry"][0].lower().split()
-        if word in words:
-            entry["score"] += KEYWORD_WEIGHT
-        else:
-            ranks.remove(entry)
-
-    if len(ranks) == 0:
-        raise NoResultsException(queries, context)
-
-
 def rank_position(ranks, queries, context, word):
     if word == "next" or word == "upcoming":
         condition = (lambda date, best:
@@ -62,16 +47,21 @@ def rank_position(ranks, queries, context, word):
                         else False)
 
     best_date = None
-    best_entry = None
+    best_difference = None
 
     for entry in ranks:
-        date = datetime.datetime.strptime(entry["answer"]["entry"][1], "%B %d, %Y").date()
+        date = datetime.datetime.strptime(entry["answer"]["entry"][1].split("; ")[0], "%B %d, %Y").date()
 
         if condition(date, best_date):
             best_date = date
-            best_entry = entry
+            best_difference = (date - datetime.datetime.today().date()).total_seconds()
 
-    if best_date:
-        best_entry["score"] += KEYWORD_WEIGHT
-    else:
+    if not best_date:
         raise NoResultsException(queries, context)
+
+    for entry in ranks:
+        date = datetime.datetime.strptime(entry["answer"]["entry"][1].split("; ")[0], "%B %d, %Y").date()
+        difference = (date - datetime.datetime.today().date()).total_seconds()
+        score = best_difference / difference
+
+        entry["score"] += score * KEYWORD_WEIGHT

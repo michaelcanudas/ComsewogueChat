@@ -5,3 +5,4 @@ POSITION_KEYWORDS = ["next", "last", "upcoming", "recent"]
 
 PROXIMITY_WEIGHT = 1
 DISCRIMINATION_WEIGHT = 1
+SIMILARITY_WEIGHT = 1

@@ -9,13 +9,13 @@ def rank(answers, queries, context):
             "score": 0
         })
 
+    similarity.rank(ranks, queries, context)
+
     keyword.rank(ranks, queries, context)
 
     proximity.rank(ranks, queries, context)
 
     discrimination.rank(ranks, queries, context)
-
-    #similarity.rank(ranks, context)
 
     max_score = -1
     max_answer = {}
