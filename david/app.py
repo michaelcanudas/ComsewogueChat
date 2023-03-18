@@ -16,9 +16,15 @@ def main():
     try:
         request = req.get_json()
 
-        questions, past_questions, span = format_request(request)
-
-        answers = answer_questions(questions, past_questions)
+        try:
+            questions, past_questions, span = format_request(request, False)
+            answers = answer_questions(questions, past_questions)
+        except Exception as e:
+            try:
+                questions, past_questions, span = format_request(request, True)
+                answers = answer_questions(questions, past_questions)
+            except:
+                raise e
 
         response = format_responses(answers, span)
 
