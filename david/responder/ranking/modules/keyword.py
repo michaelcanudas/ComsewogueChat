@@ -52,7 +52,7 @@ def rank_gender(ranks, queries, context, word):
 
 
 def rank_position(ranks, queries, context, word):
-    if word == "next":
+    if word == "next" or word == "upcoming":
         condition = (lambda date, best:
                         True if date >= datetime.datetime.today().date() and ((not best) or date < best)
                         else False)
