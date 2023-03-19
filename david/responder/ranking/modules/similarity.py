@@ -1,4 +1,5 @@
 from .constants import *
+from exceptions.types import *
 
 
 def rank(ranks, queries, context):
@@ -12,4 +13,8 @@ def rank(ranks, queries, context):
         count = len(entry["answer"]["keywords"])
         score = count / max_count
 
-        entry["score"] += score * SIMILARITY_WEIGHT
+        if count > len(context)/3.5:
+            entry["score"] += score * SIMILARITY_WEIGHT
+        else:
+            raise NoResultsException(queries, context)
+

@@ -11,9 +11,16 @@ def main():
         request = {"question": input(), "past_requests": [], "spanish": False}
 
         t0 = time.time()
-        questions, past_questions, span = format_request(request)
 
-        answers = answer_questions(questions, past_questions)
+        try:
+            questions, past_questions, span = format_request(request, False)
+            answers = answer_questions(questions, past_questions)
+        except Exception as e:
+            try:
+                questions, past_questions, span = format_request(request, True)
+                answers = answer_questions(questions, past_questions)
+            except:
+                raise e
 
         response = format_responses(answers, span)
         t1 = time.time()
@@ -21,8 +28,6 @@ def main():
         return "[SUCCESS]", response, t1 - t0
     except Exception as e:
         raise e
-        #return "[FAIL]", format_error(e, span), "NONE"
-
 
 test = main()
 print(test[0], "[TIME=" + str(test[2]) + "]", test[1])
