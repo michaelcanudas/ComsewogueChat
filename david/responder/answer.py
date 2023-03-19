@@ -71,7 +71,8 @@ def answer_question(question, past_questions=[]):
     if queries:
         for i in indexes:
             if raw_tokens[i] != corrected_tokens[i]:
-                context.remove(raw_tokens[i])
+                if raw_tokens[i] in context:
+                    context.remove(raw_tokens[i])
 
     i = len(past_questions) - 1
     while i >= 0 and (not context or not queries):
