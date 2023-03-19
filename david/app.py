@@ -10,6 +10,7 @@ import json
 app = Flask(__name__)
 CORS(app)
 
+
 @app.route("/", methods=["POST"])
 def main():
     span = False
@@ -31,6 +32,7 @@ def main():
             "response": format_error(e, span),
             "success": False
         })
+
 
 @app.route("/feedback", methods=["POST"])
 def feedback():
