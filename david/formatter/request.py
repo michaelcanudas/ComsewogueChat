@@ -1,9 +1,7 @@
 import re
 from googletrans import Translator
 from unidecode import unidecode
-from autocorrect import Speller
 from exceptions.types import *
-spell = Speller()
 
 
 def translate(text, target_language):
@@ -18,7 +16,7 @@ def translate(text, target_language):
     return translation.text
 
 
-def format_request(request, correct):
+def format_request(request):
     try:
         question = request["question"]
         span = bool(request["spanish"])
@@ -30,17 +28,11 @@ def format_request(request, correct):
         question = unidecode(question)
         question = translate(str(question), "english")
 
-    if correct:
-        past_questions.append(question)
-        question = spell(question)
-
     pattern = r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?|\!)\s"
     questions = re.split(pattern, question)
 
     past_formatted_questions = []
     for i, q in enumerate(past_questions):
-        if correct and i != len(past_questions) - 1:
-            q = spell(q)
         past_formatted_questions.extend(re.split(pattern, q))
 
 

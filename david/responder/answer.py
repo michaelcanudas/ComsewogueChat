@@ -4,12 +4,14 @@ from exceptions.types import *
 from .ranking.rank import rank
 from .constants import *
 from .utils import search_db
+from autocorrect import Speller
+spell = Speller()
 
 
 def parse_request(request):
     request = request.replace("-", " ")
     request = request.replace("JV", "Junior Varsity")
-    request = re.sub(r'[^a-zA-Z ]', '', request.lower())
+    request = re.sub(r'[^a-zA-Z0-9 ]', '', request.lower())
     words = request.split()
 
     return words
@@ -20,7 +22,7 @@ def clean_tokens(tokens):
 
     context = filter(lambda w: w not in PUNCTUATION, tokens)
     context = filter(lambda w: w not in STOPWORDS, context)
-    context = filter(lambda w: w not in classify_queries(queries), context)
+    context = filter(lambda w: w not in classify_queries(queries)[0], context)
 
     return list(queries), list(context)
 
@@ -39,11 +41,15 @@ def classify_queries(queries):
                     term_map[word] = [os.path.splitext(filename)[0]]
 
     results = set()
+    indexes = []
     for query in queries:
+        i = 0
         if query in term_map:
+            indexes.append(i)
             results.update(term_map[query])
+        i += 1
 
-    return list(results)
+    return list(results), indexes
 
 
 def search(context):
@@ -51,22 +57,33 @@ def search(context):
 
 
 def answer_question(question, past_questions=[]):
-    tokens = parse_request(question)
+    raw_tokens = parse_request(question)
+    corrected_tokens = parse_request(spell(question))
 
-    queries, context = clean_tokens(tokens)
+    if len(raw_tokens) != len(corrected_tokens):
+        raw_tokens = corrected_tokens
 
-    queries = classify_queries(queries)
+    _, context = clean_tokens(raw_tokens)
+
+    queries, _ = clean_tokens(corrected_tokens)
+    queries, indexes = classify_queries(queries)
+
+    if queries:
+        for i in indexes:
+            if raw_tokens[i] != corrected_tokens[i]:
+                context.remove(raw_tokens[i])
 
     i = len(past_questions) - 1
     while i >= 0 and (not context or not queries):
-        past_tokens = parse_request(past_questions[i])
+        raw_past_tokens = parse_request(past_questions[i])
+        corrected_past_tokens = parse_request(spell(past_questions[i]))
 
         if not queries:
-            queries, _ = clean_tokens(past_tokens)
-            queries = classify_queries(queries)
+            queries, _ = clean_tokens(corrected_past_tokens)
+            queries = classify_queries(queries)[0]
 
         if not context:
-            _, context = clean_tokens(past_tokens)
+            _, context = clean_tokens(raw_past_tokens)
 
         i -= 1
 
@@ -81,8 +98,13 @@ def answer_question(question, past_questions=[]):
 
     try:
         answers = search(context)
-    except Exception as e:
-        raise NoResultsException(queries, context)
+    except:
+        try:
+            for i in range(len(context)):
+                context[i] = spell(context[i])
+            answers = search(context)
+        except Exception as e:
+            raise NoResultsException(queries, context)
 
     if not answers:
         raise NoResultsException(queries, context)
