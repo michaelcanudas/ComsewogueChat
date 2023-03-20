@@ -1,7 +1,7 @@
 import os
 import threading
 import redis
-from .constants import COMMONWORDS
+from .constants import *
 from dotenv import load_dotenv
 load_dotenv()
 from autocorrect import Speller
