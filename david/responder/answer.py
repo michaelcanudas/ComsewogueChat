@@ -70,9 +70,8 @@ def answer_question(question, past_questions=[]):
 
     if queries:
         for i in indexes:
-            if raw_tokens[i] != corrected_tokens[i]:
-                if raw_tokens[i] in context:
-                    context.remove(raw_tokens[i])
+            if raw_tokens[i] != corrected_tokens[i] and raw_tokens[i] in context:
+                context.remove(raw_tokens[i])
 
     i = len(past_questions) - 1
     while i >= 0 and (not context or not queries):
@@ -98,14 +97,9 @@ def answer_question(question, past_questions=[]):
         raise NoContextException(queries)
 
     try:
-        answers = search(context)
+        answers, context = search(context)
     except:
-        try:
-            for i in range(len(context)):
-                context[i] = spell(context[i])
-            answers = search(context)
-        except Exception as e:
-            raise NoResultsException(queries, context)
+        raise NoResultsException(queries, context)
 
     if not answers:
         raise NoResultsException(queries, context)
