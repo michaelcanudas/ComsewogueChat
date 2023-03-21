@@ -16,6 +16,9 @@ def rank(ranks, queries, context):
     for entry in ranks:
         date = datetime.datetime.strptime(entry["answer"]["entry"][1].split("; ")[0], "%B %d, %Y").date()
         difference = math.fabs((date - datetime.datetime.today().date()).total_seconds())
-        score = 1 - (difference / max_difference)
+        try:
+            score = 1 - (difference / max_difference)
+        except:
+            score = 0
 
         entry["score"] += score * PROXIMITY_WEIGHT
