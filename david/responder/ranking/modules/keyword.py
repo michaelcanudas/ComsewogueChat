@@ -62,6 +62,9 @@ def rank_position(ranks, queries, context, word):
     for entry in ranks:
         date = datetime.datetime.strptime(entry["answer"]["entry"][1].split("; ")[0], "%B %d, %Y").date()
         difference = (date - datetime.datetime.today().date()).total_seconds()
-        score = best_difference / difference
+        try:
+            score = best_difference / difference
+        except:
+            score = 1
 
         entry["score"] += score * KEYWORD_WEIGHT
